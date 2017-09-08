@@ -1,37 +1,40 @@
 package lab12;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class Department implements Comparable<Department> {
 
     private List<Faculty> faculties;
     private String name;
-    private Date creationDate;
+    private LocalDate creationDate;
     private String phoneNumber;
 
-    public Department(String name, Date creationDate, String phoneNumber, List<Faculty> faculties) {
+    public Department(String name, LocalDate creationDate, String phoneNumber, List<Faculty> faculties) {
         this.faculties = faculties;
         this.name = name;
         this.creationDate = creationDate;
         this.phoneNumber = phoneNumber;
     }
 
-    public Department(String name, Date creationDate, String phoneNumber) {
-        this.faculties = new ArrayList<Faculty>();
+    public Department(String name, LocalDate creationDate, String phoneNumber) {
+        this.faculties = new ArrayList<>();
         this.name = name;
         this.creationDate = creationDate;
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * only name and creation date are compared
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof Faculty)) {
+        if (!(o instanceof Department)) {
             return false;
         }
         Department d = (Department) o;
@@ -44,9 +47,12 @@ public class Department implements Comparable<Department> {
         return this.name.hashCode() ^ this.creationDate.hashCode();
     }
 
+    /**
+     * @return sorted immutable list of faculties
+     */
     public List<Faculty> getSortedFaculties() {
         Collections.sort(faculties);
-        return faculties;
+        return Collections.unmodifiableList(faculties);
     }
 
     public boolean removeFaculty(Faculty faculty) {
@@ -69,7 +75,7 @@ public class Department implements Comparable<Department> {
         this.name = name;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return this.creationDate;
     }
 
@@ -83,9 +89,12 @@ public class Department implements Comparable<Department> {
 
     @Override
     public String toString() {
-        return String.format("This is %s department created on %1$te %1$tm %1$tY.", name, creationDate);
+        return String.format("This is %s department created on %s.", name, creationDate.toString());
     }
 
+    /**
+     * @return number of teachers on all faculties
+     */
     public int getTeachersCount() {
         return faculties
                 .stream()
@@ -93,6 +102,9 @@ public class Department implements Comparable<Department> {
                 .sum();
     }
 
+    /**
+     * @return number of subjects on all faculties
+     */
     public int getSubjectsCount() {
         return faculties
                 .stream()
@@ -107,5 +119,14 @@ public class Department implements Comparable<Department> {
     @Override
     public int compareTo(Department department) {
         return name.compareTo(department.name);
+    }
+
+    /**
+     * For testing only
+     *
+     * @return list of faculties
+     */
+    List<Faculty> getFaculties() {
+        return faculties;
     }
 }

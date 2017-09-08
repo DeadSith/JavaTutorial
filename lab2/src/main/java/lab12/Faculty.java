@@ -1,17 +1,18 @@
 package lab12;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 public class Faculty implements Comparable<Faculty> {
     private String name;
-    private Date creationDate;
+    private LocalDate creationDate;
     private List<String> teachers;
     private List<String> subjects;
     private Department department;
 
-    public Faculty(String name, Date creationDate, Department department, List<String> teachers, List<String> subjects) {
+    public Faculty(String name, LocalDate creationDate, Department department, List<String> teachers, List<String> subjects) {
         this.name = name;
         this.creationDate = creationDate;
         this.department = department;
@@ -19,7 +20,7 @@ public class Faculty implements Comparable<Faculty> {
         this.subjects = subjects;
     }
 
-    public Faculty(String name, Date creationDate, Department department) {
+    public Faculty(String name, LocalDate creationDate, Department department) {
         this.name = name;
         this.department = department;
         this.creationDate = creationDate;
@@ -32,6 +33,9 @@ public class Faculty implements Comparable<Faculty> {
         return this.name.compareTo(faculty.name);
     }
 
+    /**
+     * Only name and department are compared
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) {
@@ -52,16 +56,22 @@ public class Faculty implements Comparable<Faculty> {
 
     @Override
     public String toString() {
-        return String.format("This is %s faculty created on %1$te %1$tm %1$tY.", name, creationDate);
+        return String.format("This is %s faculty created on %s.", name, creationDate.toString());
     }
 
 
+    /**
+     * @return immutable list of subjects
+     */
     public List<String> getSubjects() {
-        return subjects;
+        return Collections.unmodifiableList(subjects);
     }
 
+    /**
+     * @return immutable list of teachers
+     */
     public List<String> getTeachers() {
-        return teachers;
+        return Collections.unmodifiableList(teachers);
     }
 
     public boolean addTeacher(String name) {
@@ -93,7 +103,7 @@ public class Faculty implements Comparable<Faculty> {
     }
 
     public int getSubjectsCount() {
-        return teachers.size();
+        return subjects.size();
     }
 }
 
