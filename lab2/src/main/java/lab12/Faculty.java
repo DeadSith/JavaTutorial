@@ -1,18 +1,18 @@
 package lab12;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Faculty implements Comparable<Faculty> {
     private String name;
     private LocalDate creationDate;
-    private List<String> teachers;
-    private List<String> subjects;
+    private Set<String> teachers;
+    private Set<String> subjects;
     private Department department;
 
-    public Faculty(String name, LocalDate creationDate, Department department, List<String> teachers, List<String> subjects) {
+    public Faculty(String name, LocalDate creationDate, Department department, Set<String> teachers, Set<String> subjects) {
         this.name = name;
         this.creationDate = creationDate;
         this.department = department;
@@ -24,8 +24,8 @@ public class Faculty implements Comparable<Faculty> {
         this.name = name;
         this.department = department;
         this.creationDate = creationDate;
-        this.subjects = new ArrayList<>();
-        this.teachers = new ArrayList<>();
+        this.subjects = new TreeSet<String>();
+        this.teachers = new TreeSet<>();
     }
 
     @Override
@@ -59,19 +59,22 @@ public class Faculty implements Comparable<Faculty> {
         return String.format("This is %s faculty created on %s.", name, creationDate.toString());
     }
 
+    void setDepartment(Department department) {
+        this.department = department;
+    }
 
     /**
      * @return immutable list of subjects
      */
-    public List<String> getSubjects() {
-        return Collections.unmodifiableList(subjects);
+    public Set<String> getSubjects() {
+        return Collections.unmodifiableSet(subjects);
     }
 
     /**
      * @return immutable list of teachers
      */
-    public List<String> getTeachers() {
-        return Collections.unmodifiableList(teachers);
+    public Set<String> getTeachers() {
+        return Collections.unmodifiableSet(teachers);
     }
 
     public boolean addTeacher(String name) {

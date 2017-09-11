@@ -1,26 +1,29 @@
 package lab12;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Department implements Comparable<Department> {
 
-    private List<Faculty> faculties;
+    private Set<Faculty> faculties;
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
 
-    public Department(String name, LocalDate creationDate, String phoneNumber, List<Faculty> faculties) {
+    public Department(String name, LocalDate creationDate, String phoneNumber, Set<Faculty> faculties) {
         this.faculties = faculties;
+        for (Faculty f : faculties) {
+            f.setDepartment(this);
+        }
         this.name = name;
         this.creationDate = creationDate;
         this.phoneNumber = phoneNumber;
     }
 
     public Department(String name, LocalDate creationDate, String phoneNumber) {
-        this.faculties = new ArrayList<>();
+        this.faculties = new TreeSet<>();
         this.name = name;
         this.creationDate = creationDate;
         this.phoneNumber = phoneNumber;
@@ -38,8 +41,7 @@ public class Department implements Comparable<Department> {
             return false;
         }
         Department d = (Department) o;
-        return this.name.equals(d.name) &&
-                this.creationDate.equals(d.creationDate);
+        return this.name.equals(d.name);
     }
 
     @Override
@@ -50,9 +52,8 @@ public class Department implements Comparable<Department> {
     /**
      * @return sorted immutable list of faculties
      */
-    public List<Faculty> getSortedFaculties() {
-        Collections.sort(faculties);
-        return Collections.unmodifiableList(faculties);
+    public Set<Faculty> getSortedFaculties() {
+        return Collections.unmodifiableSet(faculties);
     }
 
     public boolean removeFaculty(Faculty faculty) {
@@ -126,7 +127,7 @@ public class Department implements Comparable<Department> {
      *
      * @return list of faculties
      */
-    List<Faculty> getFaculties() {
+    Set<Faculty> getFaculties() {
         return faculties;
     }
 }

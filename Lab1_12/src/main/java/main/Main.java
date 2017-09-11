@@ -82,7 +82,7 @@ public class Main {
      * @return hypotenuse and perimeter of triangle
      */
     Rectangle beginTask(double a, double b) {
-        if (a < 0.0 || b < 0.0)
+        if (a <= 0.0 || b <= 0.0)
             throw new IllegalArgumentException();
         Rectangle r = new Rectangle();
         r.hypotenuse = Math.sqrt(a * a + b * b);
@@ -126,11 +126,10 @@ public class Main {
             if (a < c)
                 return a;
             else return c;
-        } else {
-            if (b < c)
-                return b;
-            return c;
         }
+        if (b < c)
+            return b;
+        return c;
     }
 
     /**
@@ -144,23 +143,23 @@ public class Main {
         Circle c = new Circle();
         switch (index) {
             case 1:
+                c.R = value;
                 break;
             case 2:
-                value /= 2;
+                c.R = value / 2.0;
                 break;
             case 3:
-                value /= 6.28;
+                c.R = value / 6.28;
                 break;
             case 4:
-                value = Math.sqrt(value / 3.14);
+                c.R = Math.sqrt(value / 3.14);
                 break;
             default:
                 throw new IllegalArgumentException();
         }
-        c.R = value;
-        c.D = 2 * value;
-        c.L = 2 * 3.14 * value;
-        c.S = 3.14 * value * value;
+        c.D = 2 * c.R;
+        c.L = 2 * 3.14 * c.R;
+        c.S = 3.14 * c.R * c.R;
         return c;
     }
 

@@ -1,61 +1,79 @@
 package lab12;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.testng.Assert.assertEquals;
 
 public class FacultyTest {
     Department department;
-    ArrayList<String> subjects;
-    ArrayList<String> teachers;
+    Set<String> subjects;
+    Set<String> teachers;
+    Faculty faculty;
 
     @BeforeTest
     void setup() {
         department = new Department("Test", LocalDate.of(1984, 1, 1), "+300000245");
-        subjects = new ArrayList<>();
+        subjects = new TreeSet<>();
         subjects.add("Subject 1");
         subjects.add("Subject 2");
-        teachers = new ArrayList<>();
+        teachers = new TreeSet<>();
         teachers.add("Teacher 1");
         teachers.add("Teacher 2");
+        faculty = new Faculty("Test", LocalDate.of(1992, 1, 1), department, teachers, subjects);
+
     }
 
-    @Test
-    void teacherTest() {
-        Faculty faculty = new Faculty("Test", LocalDate.of(1992, 1, 1), department, teachers, subjects);
-        assertEquals(faculty.addTeacher("Teacher 1"), false);
-        assertEquals(faculty.getTeachersCount(), 2);
-        assertEquals(faculty.addTeacher("Teacher 3"), true);
-        assertEquals(faculty.getTeachersCount(), 3);
-        assertEquals(faculty.removeTeacher("Teacher 4"), false);
-        assertEquals(faculty.getTeachersCount(), 3);
-        assertEquals(faculty.removeTeacher("Teacher 2"), true);
-        assertEquals(faculty.removeTeacher("Teacher 1"), true);
-        assertEquals(faculty.removeTeacher("Teacher 3"), true);
-        assertEquals(faculty.removeTeacher("Teacher 1"), false);
-        assertEquals(faculty.getTeachersCount(), 0);
-        faculty.getTeachers();
+    @DataProvider
+    public Object[][] addTeacherProvider() {
+        return new Object[][]{{"Teacher 1", false},
+                {"Teacher 3", true}};
     }
 
-    @Test
-    void subjectsTest() {
-        Faculty faculty = new Faculty("Test", LocalDate.of(1992, 1, 1), department, teachers, subjects);
-        assertEquals(faculty.addSubject("Subject 1"), false);
-        assertEquals(faculty.getSubjectsCount(), 2);
-        assertEquals(faculty.addSubject("Subject 3"), true);
-        assertEquals(faculty.getSubjectsCount(), 3);
-        assertEquals(faculty.removeSubject("Subject 4"), false);
-        assertEquals(faculty.getSubjectsCount(), 3);
-        assertEquals(faculty.removeSubject("Subject 2"), true);
-        assertEquals(faculty.removeSubject("Subject 1"), true);
-        assertEquals(faculty.removeSubject("Subject 3"), true);
-        assertEquals(faculty.removeSubject("Subject 1"), false);
-        assertEquals(faculty.getSubjectsCount(), 0);
-        faculty.getSubjects();
+    @Test(dataProvider = "addTeacherProvider")
+    public void addTeacherTest(String name, boolean check) {
+        assertEquals(faculty.addTeacher(name), check);
+    }
+
+    @DataProvider
+    public Object[][] removeTeacherProvider() {
+        return new Object[][]{{"Teacher 1", true},
+                {"Teacher 4", false}};
+    }
+
+
+    @Test(dataProvider = "removeTeacherProvider")
+    void removeTeacherTest(String name, boolean check) {
+        assertEquals(faculty.removeTeacher(name), check);
+    }
+
+
+    @DataProvider
+    public Object[][] addSubjectProvider() {
+        return new Object[][]{{"Subject 1", false},
+                {"Subject 3", true}};
+    }
+
+    @Test(dataProvider = "addSubjectProvider")
+    public void addSubjectTest(String name, boolean check) {
+        assertEquals(faculty.addSubject(name), check);
+    }
+
+    @DataProvider
+    public Object[][] removeSubjectProvider() {
+        return new Object[][]{{"Subject 1", true},
+                {"Subject 4", false}};
+    }
+
+
+    @Test(dataProvider = "removeSubjectProvider")
+    void removeSubjectTest(String name, boolean check) {
+        assertEquals(faculty.removeSubject(name), check);
     }
 
 
