@@ -18,14 +18,14 @@ public class FacultyTest {
 
     @BeforeTest
     void setup() {
-        department = new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("+300000245").createDepartment();
+        department = new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("+300000245").build();
         subjects = new TreeSet<>();
         subjects.add("Subject 1");
         subjects.add("Subject 2");
         teachers = new TreeSet<>();
         teachers.add("Teacher 1");
         teachers.add("Teacher 2");
-        faculty = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(teachers).setSubjects(subjects).createFaculty();
+        faculty = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(teachers).setSubjects(subjects).build();
 
     }
 
@@ -79,14 +79,14 @@ public class FacultyTest {
 
     @Test
     void toStringTest() {
-        Faculty faculty = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(teachers).setSubjects(subjects).createFaculty();
+        Faculty faculty = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(teachers).setSubjects(subjects).build();
         assertEquals(faculty.toString(), "This is Test faculty created on 1992-01-01.");
     }
 
     @Test
     void hashTest() {
-        Faculty faculty1 = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(null).setSubjects(null).createFaculty();
-        Faculty faculty2 = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1994, 1, 1)).setDepartment(department).setTeachers(null).setSubjects(null).createFaculty();
+        Faculty faculty1 = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1992, 1, 1)).setDepartment(department).setTeachers(null).setSubjects(null).build();
+        Faculty faculty2 = new FacultyBuilder().setName("Test").setCreationDate(LocalDate.of(1994, 1, 1)).setDepartment(department).setTeachers(null).setSubjects(null).build();
         assertEquals(faculty1.hashCode(), faculty2.hashCode());
     }
 

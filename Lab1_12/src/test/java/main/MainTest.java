@@ -30,7 +30,7 @@ public class MainTest {
         return new Object[][]{{-1.0, 2.0}, {-2.0, 1.0}, {0.0, 1.0}};
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class, dataProvider = "negativeBeginProvider")
+    @Test(expectedExceptions = AssertionError.class, dataProvider = "negativeBeginProvider")
     public void negativeBeginTest(double a, double b) {
         m.beginTask(a, b);
     }
@@ -50,7 +50,7 @@ public class MainTest {
         return new Object[][]{{10}, {1000}};
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class, dataProvider = "negativeIntProvider")
+    @Test(expectedExceptions = AssertionError.class, dataProvider = "negativeIntProvider")
     public void negativeIntTest(int n) {
         m.intTask(n);
     }
@@ -97,7 +97,7 @@ public class MainTest {
         assertEquals(m.caseTask(index, value), check);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void negativeForTest() {
         m.forTask(0);
     }
@@ -107,7 +107,7 @@ public class MainTest {
         assertEquals(m.forTask(9), 17.6432256, 0.00001);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void negativeWhileTest() {
         m.whileTask(1);
     }

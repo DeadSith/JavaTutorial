@@ -82,8 +82,7 @@ public class Main {
      * @return hypotenuse and perimeter of triangle
      */
     Rectangle beginTask(double a, double b) {
-        if (a <= 0.0 || b <= 0.0)
-            throw new IllegalArgumentException();
+        assert (a > 0 && b > 0);
         Rectangle r = new Rectangle();
         r.hypotenuse = Math.sqrt(a * a + b * b);
         r.perimeter = a + b + r.hypotenuse;
@@ -95,8 +94,7 @@ public class Main {
      * @return reversed number
      */
     int intTask(int number) {
-        if (Math.abs(number) < 100 || Math.abs(number) > 999)
-            throw new IllegalArgumentException();
+        assert  (Math.abs(number) >= 100 && Math.abs(number) <= 999);
         int result = number % 10 * 100;
         number /= 10;
         result += number % 10 * 10;
@@ -138,7 +136,7 @@ public class Main {
      * @return Circle object with calculated radius, diameter, length and perimeter
      */
     Circle caseTask(int index, double value) {
-        if (value < 0)
+        if (value < 1)
             throw new IllegalArgumentException();
         Circle c = new Circle();
         switch (index) {
@@ -168,8 +166,7 @@ public class Main {
      * @return product from 1.1 up to {@code n}
      */
     double forTask(int n) {
-        if (n < 1)
-            throw new IllegalArgumentException();
+        assert  (n > 0);
         double r = 1.0;
         double m = 1.1;
         for (int i = 1; i < n; i++) {
@@ -184,8 +181,7 @@ public class Main {
      * @return max sum and values of biggest element of sum
      */
     SumTuple whileTask(int n) {
-        if (n < 2)
-            throw new IllegalArgumentException();
+        assert  (n > 1);
         int s = 0, k = 1;
         while (s + k <= n) {
             s += k;

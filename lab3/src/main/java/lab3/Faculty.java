@@ -69,19 +69,11 @@ public class Faculty implements Comparable<Faculty> {
     }
 
     public boolean addTeacher(String name) {
-        if (!teachers.contains(name)) {
-            teachers.add(name);
-            return true;
-        }
-        return false;
+        return teachers.add(name);
     }
 
     public boolean addSubject(String name) {
-        if (!subjects.contains(name)) {
-            subjects.add(name);
-            return true;
-        }
-        return false;
+        return subjects.add(name);
     }
 
     public boolean removeTeacher(String name) {
@@ -98,6 +90,10 @@ public class Faculty implements Comparable<Faculty> {
 
     public int getSubjectsCount() {
         return subjects.size();
+    }
+
+    public Department getDepartment() {
+        return department;
     }
 }
 

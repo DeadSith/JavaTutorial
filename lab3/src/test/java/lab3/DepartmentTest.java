@@ -16,9 +16,9 @@ public class DepartmentTest {
 
     @BeforeMethod
     void setup() {
-        Faculty f1 = new FacultyBuilder().setName("Test3").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).createFaculty();
-        Faculty f2 = new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).createFaculty();
-        Faculty f3 = new FacultyBuilder().setName("Test2").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).createFaculty();
+        Faculty f1 = new FacultyBuilder().setName("Test3").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).build();
+        Faculty f2 = new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).build();
+        Faculty f3 = new FacultyBuilder().setName("Test2").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).build();
         fillTeachersAndSubjects(f1);
         fillTeachersAndSubjects(f2);
         fillTeachersAndSubjects(f3);
@@ -26,7 +26,7 @@ public class DepartmentTest {
         faculties.add(f1);
         faculties.add(f2);
         faculties.add(f3);
-        department = new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("+300000245").setFaculties(faculties).createDepartment();
+        department = new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("+300000245").setFaculties(faculties).build();
 
     }
 
@@ -53,15 +53,15 @@ public class DepartmentTest {
     @Test
     void getSortedFacultiesTest() {
         Set<Faculty> sorted = department.getSortedFaculties();
-        assertEquals(sorted.toArray(), new Faculty[]{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(),
-                new FacultyBuilder().setName("Test2").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(),
-                new FacultyBuilder().setName("Test3").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty()});
+        assertEquals(sorted.toArray(), new Faculty[]{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(),
+                new FacultyBuilder().setName("Test2").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(),
+                new FacultyBuilder().setName("Test3").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build()});
     }
 
     @DataProvider
     public Object[][] addFacultyProvider() {
-        return new Object[][]{{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(), false},
-                {new FacultyBuilder().setName("Test4").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(), true}};
+        return new Object[][]{{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(), false},
+                {new FacultyBuilder().setName("Test4").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(), true}};
     }
 
     @Test(dataProvider = "addFacultyProvider")
@@ -71,8 +71,8 @@ public class DepartmentTest {
 
     @DataProvider
     public Object[][] removeFacultyProvider() {
-        return new Object[][]{{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(), true},
-                {new FacultyBuilder().setName("Test5").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).createFaculty(), false}};
+        return new Object[][]{{new FacultyBuilder().setName("Test1").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(), true},
+                {new FacultyBuilder().setName("Test5").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(department).build(), false}};
     }
 
     @Test(dataProvider = "removeFacultyProvider")
@@ -87,6 +87,6 @@ public class DepartmentTest {
 
     @Test
     void hashTest() {
-        assertEquals(department.hashCode(), new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("").createDepartment().hashCode());
+        assertEquals(department.hashCode(), new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("").build().hashCode());
     }
 }

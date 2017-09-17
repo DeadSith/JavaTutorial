@@ -50,15 +50,11 @@ public class Department implements Comparable<Department> {
     }
 
     public boolean removeFaculty(Faculty faculty) {
-        return this.faculties.remove(faculty);
+        return faculties.remove(faculty);
     }
 
     public boolean addFaculty(Faculty faculty) {
-        if (!faculties.contains(faculty)) {
-            faculties.add(faculty);
-            return true;
-        }
-        return false;
+        return faculties.add(faculty);
     }
 
     public String getName() {
@@ -113,14 +109,5 @@ public class Department implements Comparable<Department> {
     @Override
     public int compareTo(Department department) {
         return name.compareTo(department.name);
-    }
-
-    /**
-     * For testing only
-     *
-     * @return list of faculties
-     */
-    Set<Faculty> getFaculties() {
-        return faculties;
     }
 }
