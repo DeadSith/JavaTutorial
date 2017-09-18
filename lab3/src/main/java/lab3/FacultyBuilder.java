@@ -4,9 +4,10 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.*;
 
 public class FacultyBuilder {
+    private final static String TEACHERS_REGEX = "Teachers: *(.*?);";
+    private final static String SUBJECTS_REGEX = "Subjects: *(.*?);";
     private String name;
     private LocalDate creationDate;
     private Department department;
@@ -51,19 +52,16 @@ public class FacultyBuilder {
      * @return changes current builder according to input and returns builder
      */
     public FacultyBuilder fromString(String input) {
-        Pattern p = Pattern.compile("Name: *([a-zA-z, ]+);Created: *(\\d{4}-\\d{2}-\\d{2});(?:Teachers: *(?<teachers>.*);)?(?:Subjects: *(?<subjects>.*))?");
-        Matcher match = p.matcher(input);
-        assert (match.find());
-        this.name = match.group(1);
-        this.creationDate = LocalDate.parse(match.group(2));
+        this.name = RegexHelper.getRegexGroup(input, RegexHelper.NAME_REGEX);
+        this.creationDate = LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX));
         try {
-            this.teachers = new TreeSet<>(Arrays.asList(match.group("teachers").split(",")));
+            this.teachers = new TreeSet<>(Arrays.asList(RegexHelper.getRegexGroup(input, TEACHERS_REGEX).split(",")));
         }
         catch (Exception e){
             this.teachers = new TreeSet<>();
         }
         try {
-            this.subjects = new TreeSet<>(Arrays.asList(match.group("subjects").split(",")));
+            this.subjects = new TreeSet<>(Arrays.asList(RegexHelper.getRegexGroup(input, SUBJECTS_REGEX).split(",")));
         }
         catch (Exception e){
             this.subjects = new TreeSet<>();

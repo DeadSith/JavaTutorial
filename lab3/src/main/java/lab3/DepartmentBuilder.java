@@ -1,13 +1,13 @@
 package lab3;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DepartmentBuilder {
+    private final static String PHONE_NUMBER_REGEX = "Number: *(\\+\\d{10,15});";
+    private final static String FACULTIES_REGEX = "Faculties: (.+)\\/";
+
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
@@ -44,17 +44,13 @@ public class DepartmentBuilder {
      * @return changes current builder according to input and returns builder
      */
     public DepartmentBuilder fromString(String input){
-        Pattern p = Pattern.compile("Name: *([a-zA-z, ]+);Created: *(\\d{4}-\\d{2}-\\d{2});Number: *(\\+\\d{10,15});(?:Faculties: (.+))?");
-        Matcher match = p.matcher(input);
-        assert (match.find());
-        this.name = match.group(1);
-        this.creationDate = LocalDate.parse(match.group(2));
-        this.phoneNumber = match.group(3);
+        this.name = RegexHelper.getRegexGroup(input, RegexHelper.NAME_REGEX);
+        this.creationDate = LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX));
+        this.phoneNumber = RegexHelper.getRegexGroup(input, PHONE_NUMBER_REGEX);
         this.faculties = new TreeSet<>();
         try {
-
             String[] facultiesArray;
-            facultiesArray = match.group(4).split("/");
+            facultiesArray = RegexHelper.getRegexGroup(input, FACULTIES_REGEX).split("/");
             for (String faculty: facultiesArray){
                 faculties.add(new FacultyBuilder().fromString(faculty).build());
             }
@@ -64,4 +60,6 @@ public class DepartmentBuilder {
         }
         return this;
     }
+
+
 }
