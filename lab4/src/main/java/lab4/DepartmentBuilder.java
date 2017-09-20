@@ -24,6 +24,8 @@ public class DepartmentBuilder {
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     public DepartmentBuilder setCreationDate(LocalDate creationDate) {
+        if (creationDate.isAfter(LocalDate.now()))
+            creationDate = LocalDate.now();
         this.creationDate = creationDate;
         return this;
     }

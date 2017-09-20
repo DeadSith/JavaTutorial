@@ -6,7 +6,6 @@ import lab4.serializers.LocalDateDeserializer;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.TreeSet;
 
 @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
@@ -27,6 +26,8 @@ public class FacultyBuilder {
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     public FacultyBuilder setCreationDate(LocalDate creationDate) {
+        if (creationDate.isAfter(LocalDate.now()))
+            creationDate = LocalDate.now();
         this.creationDate = creationDate;
         return this;
     }
