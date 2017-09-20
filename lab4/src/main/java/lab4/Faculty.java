@@ -1,9 +1,14 @@
 package lab4;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
+@JsonDeserialize(builder = FacultyBuilder.class)
 public class Faculty implements Comparable<Faculty> {
     private String name;
     private LocalDate creationDate;
@@ -11,7 +16,11 @@ public class Faculty implements Comparable<Faculty> {
     private Set<String> subjects;
     private Department department;
 
-    Faculty(String name, LocalDate creationDate, Department department, Set<String> teachers, Set<String> subjects) {
+    private Faculty(){
+
+    }
+
+    Faculty(String name, LocalDate creationDate, Department department, TreeSet<String> teachers, TreeSet<String> subjects) {
         this.name = name;
         this.creationDate = creationDate;
         this.department = department;
@@ -84,16 +93,27 @@ public class Faculty implements Comparable<Faculty> {
         return subjects.remove(name);
     }
 
+    @JsonIgnore
     public int getTeachersCount() {
         return teachers.size();
     }
 
+    @JsonIgnore
     public int getSubjectsCount() {
         return subjects.size();
     }
 
+    @JsonIgnore
     public Department getDepartment() {
         return department;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 }
 

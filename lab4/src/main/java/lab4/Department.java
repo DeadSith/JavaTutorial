@@ -1,18 +1,27 @@
 package lab4;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
+@JsonDeserialize(builder = DepartmentBuilder.class)
+@XmlRootElement
 public class Department implements Comparable<Department> {
 
-    private Set<Faculty> faculties;
+    private TreeSet<Faculty> faculties;
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
 
+    private Department(){}
 
-    Department(String name, LocalDate creationDate, String phoneNumber, Set<Faculty> faculties) {
+    Department(String name, LocalDate creationDate, String phoneNumber, TreeSet<Faculty> faculties) {
         this.faculties = faculties;
         for (Faculty f : faculties) {
             f.setDepartment(this);
@@ -45,6 +54,8 @@ public class Department implements Comparable<Department> {
     /**
      * @return sorted immutable list of faculties
      */
+
+    @JsonProperty("faculties")
     public Set<Faculty> getSortedFaculties() {
         return Collections.unmodifiableSet(faculties);
     }
@@ -54,6 +65,7 @@ public class Department implements Comparable<Department> {
     }
 
     public boolean addFaculty(Faculty faculty) {
+        faculty.setDepartment(this);
         return faculties.add(faculty);
     }
 
@@ -85,6 +97,7 @@ public class Department implements Comparable<Department> {
     /**
      * @return number of teachers on all faculties
      */
+    @JsonIgnore
     public int getTeachersCount() {
         return faculties
                 .stream()
@@ -95,6 +108,7 @@ public class Department implements Comparable<Department> {
     /**
      * @return number of subjects on all faculties
      */
+    @JsonIgnore
     public int getSubjectsCount() {
         return faculties
                 .stream()
@@ -102,6 +116,7 @@ public class Department implements Comparable<Department> {
                 .sum();
     }
 
+    @JsonIgnore
     public int getFacultiesCount() {
         return faculties.size();
     }

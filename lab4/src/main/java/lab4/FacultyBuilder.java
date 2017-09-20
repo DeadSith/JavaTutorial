@@ -1,18 +1,21 @@
 package lab4;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+@JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
 public class FacultyBuilder {
     private final static String TEACHERS_REGEX = "Teachers: *(.*?);";
     private final static String SUBJECTS_REGEX = "Subjects: *(.*?);";
     private String name;
     private LocalDate creationDate;
     private Department department;
-    private Set<String> teachers;
-    private Set<String> subjects;
+    private TreeSet<String> teachers;
+    private TreeSet<String> subjects;
 
     public FacultyBuilder setName(String name) {
         this.name = name;
@@ -29,12 +32,12 @@ public class FacultyBuilder {
         return this;
     }
 
-    public FacultyBuilder setTeachers(Set<String> teachers) {
+    public FacultyBuilder setTeachers(TreeSet<String> teachers) {
         this.teachers = teachers;
         return this;
     }
 
-    public FacultyBuilder setSubjects(Set<String> subjects) {
+    public FacultyBuilder setSubjects(TreeSet<String> subjects) {
         this.subjects = subjects;
         return this;
     }

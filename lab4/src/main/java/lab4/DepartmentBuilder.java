@@ -1,9 +1,11 @@
 package lab4;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.TreeSet;
 
+@JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
 public class DepartmentBuilder {
     private final static String PHONE_NUMBER_REGEX = "Number: *(\\+\\d{10,15});";
     private final static String FACULTIES_REGEX = "Faculties: (.+)\\/";
@@ -11,7 +13,7 @@ public class DepartmentBuilder {
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
-    private Set<Faculty> faculties;
+    private TreeSet<Faculty> faculties;
 
     public DepartmentBuilder setName(String name) {
         this.name = name;
@@ -28,7 +30,7 @@ public class DepartmentBuilder {
         return this;
     }
 
-    public DepartmentBuilder setFaculties(Set<Faculty> faculties) {
+    public DepartmentBuilder setFaculties(TreeSet<Faculty> faculties) {
         this.faculties = faculties;
         return this;
     }

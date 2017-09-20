@@ -12,8 +12,8 @@ import static org.testng.Assert.assertEquals;
 
 public class FacultyTest {
     Department department;
-    Set<String> subjects;
-    Set<String> teachers;
+    TreeSet<String> subjects;
+    TreeSet<String> teachers;
     Faculty faculty;
 
     @BeforeTest
