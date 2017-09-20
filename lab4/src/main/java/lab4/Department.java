@@ -2,7 +2,11 @@ package lab4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lab4.serializers.LocalDateDeserializer;
+import lab4.serializers.LocalDateSerializer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
@@ -77,6 +81,7 @@ public class Department implements Comparable<Department> {
         this.name = name;
     }
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     public LocalDate getCreationDate() {
         return this.creationDate;
     }

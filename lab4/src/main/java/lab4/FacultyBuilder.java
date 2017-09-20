@@ -1,6 +1,8 @@
 package lab4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lab4.serializers.LocalDateDeserializer;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,6 +24,8 @@ public class FacultyBuilder {
         return this;
     }
 
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     public FacultyBuilder setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
         return this;

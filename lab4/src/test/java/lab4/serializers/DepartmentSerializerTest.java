@@ -5,6 +5,7 @@ import lab4.DepartmentBuilder;
 import lab4.Faculty;
 import lab4.FacultyBuilder;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -30,29 +31,31 @@ public class DepartmentSerializerTest {
         departments.add(d2);
     }
 
-
-    @Test(priority = 1)
-    public void testSerialize() throws Exception {
-        DepartmentXMLSerializer s = new DepartmentXMLSerializer();
-        s.serialize(d1,new File("test.json"));
+    @DataProvider
+    public Object[][] serializationProvider() {
+        return new Object[][]{{new DepartmentJSONSerializer(), "test.json"},{
+            new DepartmentXMLSerializer(),"test.xml"
+        }};
     }
 
-    @Test(priority = 2)
-    public void testDeserialize() throws Exception {
-        DepartmentXMLSerializer s = new DepartmentXMLSerializer();
-        assertEquals(s.deserialize(new File("test.json")),d1);
+    @Test(priority = 1, dataProvider = "serializationProvider")
+    public void testSerialize(Serializer<Department> s, String fileName) throws Exception {
+        s.serialize(d1,new File(fileName));
     }
 
-    @Test(priority = 3)
-    public void testSerializeCollection() throws Exception {
-        DepartmentJSONSerializer s = new DepartmentJSONSerializer();
-        s.serializeCollection(departments,new File("test.json"));
+    @Test(priority = 2, dataProvider = "serializationProvider")
+    public void testDeserialize(Serializer<Department> s, String fileName) throws Exception {
+        assertEquals(s.deserialize(new File(fileName)),d1);
     }
 
-    @Test(priority = 4)
-    public void testDeserializeCollection() throws Exception {
-        DepartmentJSONSerializer s = new DepartmentJSONSerializer();
-        assertEquals(s.deserializeCollection(new File("test.json")),departments);
+    @Test(priority = 3, dataProvider = "serializationProvider")
+    public void testSerializeCollection(Serializer<Department> s, String fileName) throws Exception {
+        s.serializeCollection(departments,new File(fileName));
+    }
+
+    @Test(priority = 4, dataProvider = "serializationProvider")
+    public void testDeserializeCollection(Serializer<Department> s, String fileName) throws Exception {
+        assertEquals(s.deserializeCollection(new File(fileName)),departments);
     }
 
 }

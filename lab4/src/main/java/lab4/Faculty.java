@@ -2,6 +2,8 @@ package lab4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lab4.serializers.LocalDateSerializer;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -112,6 +114,7 @@ public class Faculty implements Comparable<Faculty> {
         return name;
     }
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     public LocalDate getCreationDate() {
         return creationDate;
     }

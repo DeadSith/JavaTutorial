@@ -1,6 +1,8 @@
 package lab4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lab4.serializers.LocalDateDeserializer;
 
 import java.time.LocalDate;
 import java.util.TreeSet;
@@ -20,6 +22,7 @@ public class DepartmentBuilder {
         return this;
     }
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     public DepartmentBuilder setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
         return this;
