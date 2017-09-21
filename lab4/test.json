@@ -1,11 +1,21 @@
 [ {
-  "name" : "asdwqeqe",
-  "creationDate" : "1984-10-10",
-  "teachers" : [ ],
-  "subjects" : [ ]
+  "name" : "asd",
+  "creationDate" : "2017-09-21",
+  "phoneNumber" : "+1234567890",
+  "faculties" : [ {
+    "name" : "asdwqeqe",
+    "creationDate" : "1984-10-10",
+    "teachers" : [ ],
+    "subjects" : [ ]
+  } ]
 }, {
-  "name" : "dsfasdfasdfa",
-  "creationDate" : "1984-10-10",
-  "teachers" : [ ],
-  "subjects" : [ ]
+  "name" : "asdqwe",
+  "creationDate" : "2017-09-21",
+  "phoneNumber" : "+1234567890",
+  "faculties" : [ {
+    "name" : "qweqwe",
+    "creationDate" : "1984-01-10",
+    "teachers" : [ ],
+    "subjects" : [ ]
+  } ]
 } ]

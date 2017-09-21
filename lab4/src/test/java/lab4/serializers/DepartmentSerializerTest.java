@@ -33,9 +33,9 @@ public class DepartmentSerializerTest {
 
     @DataProvider
     public Object[][] serializationProvider() {
-        return new Object[][]{{new DepartmentJSONSerializer(), "test.json"},{
-            new DepartmentXMLSerializer(),"test.xml"
-        }};
+        return new Object[][]{{new DepartmentJSONSerializer(), "test.json"},
+                {new DepartmentXMLSerializer(),"test.xml"},
+                {new DepartmentTextSerializer(),"test.txt"}};
     }
 
     @Test(priority = 1, dataProvider = "serializationProvider")

@@ -50,19 +50,18 @@ public class DepartmentBuilder {
      * @param input string in form Name: _;Created: _;Number _;(Faculties: _) Faculties should be divided with /
      * @return changes current builder according to input and returns builder
      */
-    public DepartmentBuilder fromString(String input){
+    public DepartmentBuilder fromString(String input) {
         this.name = RegexHelper.getRegexGroup(input, RegexHelper.NAME_REGEX);
         this.creationDate = LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX));
         this.phoneNumber = RegexHelper.getRegexGroup(input, PHONE_NUMBER_REGEX);
         this.faculties = new TreeSet<>();
         try {
-            String[] facultiesArray;
-            facultiesArray = RegexHelper.getRegexGroup(input, FACULTIES_REGEX).split("/");
-            for (String faculty: facultiesArray){
-                faculties.add(new FacultyBuilder().fromString(faculty).build());
+            String[] facultiesArray = RegexHelper.getRegexGroup(input, FACULTIES_REGEX).split("/");
+            for (String faculty : facultiesArray) {
+                if (!faculty.isEmpty())
+                    faculties.add(new FacultyBuilder().fromString(faculty).build());
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         return this;

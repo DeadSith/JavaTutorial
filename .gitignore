@@ -2,3 +2,6 @@
 .idea
 build
 out
+test.json
+test.txt
+tet.xml

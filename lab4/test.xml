@@ -1,14 +1,28 @@
 <ArrayList>
   <item>
-    <name>asdwqeqe</name>
-    <creationDate>1984-10-10</creationDate>
-    <teachers/>
-    <subjects/>
+    <name>asd</name>
+    <creationDate>2017-09-21</creationDate>
+    <phoneNumber>+1234567890</phoneNumber>
+    <faculties>
+      <faculties>
+        <name>asdwqeqe</name>
+        <creationDate>1984-10-10</creationDate>
+        <teachers/>
+        <subjects/>
+      </faculties>
+    </faculties>
   </item>
   <item>
-    <name>dsfasdfasdfa</name>
-    <creationDate>1984-10-10</creationDate>
-    <teachers/>
-    <subjects/>
+    <name>asdqwe</name>
+    <creationDate>2017-09-21</creationDate>
+    <phoneNumber>+1234567890</phoneNumber>
+    <faculties>
+      <faculties>
+        <name>qweqwe</name>
+        <creationDate>1984-01-10</creationDate>
+        <teachers/>
+        <subjects/>
+      </faculties>
+    </faculties>
   </item>
 </ArrayList>

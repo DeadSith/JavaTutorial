@@ -23,7 +23,8 @@ public class FacultySerializerTest {
     @DataProvider
     public Object[][] serializationProvider() {
         return new Object[][]{{new FacultyJSONSerializer(), "test.json"},
-                {new FacultyXMLSerizalizer(), "test.xml"}};
+                {new FacultyXMLSerizalizer(), "test.xml"},
+                {new FacultyTextSerializer(), "test.txt"}};
     }
 
     @BeforeTest
