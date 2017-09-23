@@ -2,17 +2,14 @@ package lab4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lab4.serializers.LocalDateDeserializer;
 import lab4.serializers.LocalDateSerializer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @JsonDeserialize(builder = DepartmentBuilder.class)
 @XmlRootElement
@@ -129,5 +126,22 @@ public class Department implements Comparable<Department> {
     @Override
     public int compareTo(Department department) {
         return name.compareTo(department.name);
+    }
+
+    @JsonIgnore
+    public Map<String, Double> getAverageTeacherLoad() {
+        return faculties.stream()
+                .sorted(this::facultyComparator)
+                .collect(Collectors.toMap(Faculty::getName, f -> (double) f.getSubjectsCount() / f.getTeachersCount(), (e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    private int facultyComparator(Faculty f1, Faculty f2) {
+        double d1 = (double) f1.getSubjectsCount() / f1.getTeachersCount();
+        double d2 = (double) f2.getSubjectsCount() / f2.getTeachersCount();
+        if (Math.abs(d1 - d2) < 0.000001)
+            return 0;
+        else if (d1 < d2)
+            return -1;
+        return 1;
     }
 }
