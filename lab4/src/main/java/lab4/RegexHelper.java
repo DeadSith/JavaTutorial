@@ -11,6 +11,11 @@ public class RegexHelper {
 
     }
 
+    /**
+     * @param input String to test
+     * @param regex Regex to use for testing
+     * @return Last group that matches specified regex
+     */
     public static String getRegexGroup(String input, String regex) {
         Pattern p = Pattern.compile(regex);
         Matcher match = p.matcher(input);

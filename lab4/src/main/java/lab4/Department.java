@@ -102,7 +102,7 @@ public class Department implements Comparable<Department> {
     public int getTeachersCount() {
         return faculties
                 .stream()
-                .mapToInt(faculty -> faculty.getTeachersCount())
+                .mapToInt(Faculty::getTeachersCount)
                 .sum();
     }
 
@@ -113,7 +113,7 @@ public class Department implements Comparable<Department> {
     public int getSubjectsCount() {
         return faculties
                 .stream()
-                .mapToInt(faculty -> faculty.getSubjectsCount())
+                .mapToInt(Faculty::getSubjectsCount)
                 .sum();
     }
 
