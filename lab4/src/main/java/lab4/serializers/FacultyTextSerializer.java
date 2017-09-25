@@ -3,35 +3,34 @@ package lab4.serializers;
 import lab4.Faculty;
 import lab4.FacultyBuilder;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
 public class FacultyTextSerializer implements Serializer<Faculty> {
     @Override
-    public void serialize(Faculty object, File output) throws IOException {
-        PrintWriter writer = new PrintWriter(output, "UTF-8");
-        writer.write(generateString(object));
-        writer.flush();
-        writer.close();
+    public void serialize(Faculty object, Writer output) throws IOException {
+        output.write(generateString(object));
+        output.flush();
+        output.close();
     }
 
     @Override
-    public void serializeCollection(Collection<Faculty> objects, File output) throws IOException {
-        PrintWriter writer = new PrintWriter(output, "UTF-8");
+    public void serializeCollection(Collection<Faculty> objects, Writer output) throws IOException {
+        //PrintWriter writer = new PrintWriter(output, "UTF-8");
         for (Faculty faculty : objects) {
-            writer.write(generateString(faculty));
-            writer.write("/");
+            output.write(generateString(faculty));
+            output.write("/");
         }
-        writer.flush();
-        writer.close();
+        output.flush();
+        output.close();
     }
 
     @Override
-    public Faculty deserialize(File input) throws IOException {
+    public Faculty deserialize(InputStream input) throws IOException {
         Scanner scanner = new Scanner(input, "UTF-8");
         String inputText = scanner.useDelimiter("\\A").next();
         scanner.close();
@@ -39,7 +38,7 @@ public class FacultyTextSerializer implements Serializer<Faculty> {
     }
 
     @Override
-    public Collection<Faculty> deserializeCollection(File input) throws IOException {
+    public Collection<Faculty> deserializeCollection(InputStream input) throws IOException {
         Scanner scanner = new Scanner(input, "UTF-8");
         String inputText = scanner.useDelimiter("\\A").next();
         ArrayList<Faculty> faculties = new ArrayList<>();

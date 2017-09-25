@@ -18,10 +18,6 @@ public class Faculty implements Comparable<Faculty> {
     private Set<String> subjects;
     private Department department;
 
-    private Faculty(){
-
-    }
-
     Faculty(String name, LocalDate creationDate, Department department, TreeSet<String> teachers, TreeSet<String> subjects) {
         this.name = name;
         this.creationDate = creationDate;

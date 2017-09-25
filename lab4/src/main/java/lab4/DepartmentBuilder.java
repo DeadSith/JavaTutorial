@@ -52,7 +52,7 @@ public class DepartmentBuilder {
      */
     public DepartmentBuilder fromString(String input) {
         this.name = RegexHelper.getRegexGroup(input, RegexHelper.NAME_REGEX);
-        this.creationDate = LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX));
+        this.setCreationDate(LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX)));
         this.phoneNumber = RegexHelper.getRegexGroup(input, PHONE_NUMBER_REGEX);
         this.faculties = new TreeSet<>();
         try {

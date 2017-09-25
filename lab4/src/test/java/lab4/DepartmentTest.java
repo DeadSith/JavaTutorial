@@ -5,8 +5,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -31,7 +29,7 @@ public class DepartmentTest {
         department = new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("+300000245").setFaculties(faculties).build();
     }
 
-    private void fillTeachersAndSubjects(Faculty faculty) {
+    public static void fillTeachersAndSubjects(Faculty faculty) {
         faculty.addTeacher("t1");
         faculty.addTeacher("t2");
         faculty.addTeacher("t3");
@@ -89,19 +87,5 @@ public class DepartmentTest {
     @Test
     void hashTest() {
         assertEquals(department.hashCode(), new DepartmentBuilder().setName("Test").setCreationDate(LocalDate.of(1984, 1, 1)).setPhoneNumber("").build().hashCode());
-    }
-
-    @Test
-    void averageLoadTest() {
-        Faculty f3 = new FacultyBuilder().setName("Test5").setCreationDate(LocalDate.of(1992, 2, 2)).setDepartment(null).build();
-        fillTeachersAndSubjects(f3);
-        f3.addTeacher("qwerty");
-        department.addFaculty(f3);
-        HashMap<String, Double> map = new LinkedHashMap<>();
-        map.put("Test5", 1.0);
-        map.put("Test1", 4.0 / 3);
-        map.put("Test2", 4.0 / 3);
-        map.put("Test3", 4.0 / 3);
-        assertEquals(map, department.getAverageTeacherLoad());
     }
 }

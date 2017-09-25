@@ -4,35 +4,35 @@ import lab4.Department;
 import lab4.DepartmentBuilder;
 import lab4.Faculty;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
 public class DepartmentTextSerializer implements Serializer<Department>{
     @Override
-    public void serialize(Department object, File output) throws IOException {
-        PrintWriter writer = new PrintWriter(output, "UTF-8");
-        writer.write(generateString(object));
-        writer.flush();
-        writer.close();
+    public void serialize(Department object, Writer output) throws IOException {
+        //PrintWriter writer = new PrintWriter(output, "UTF-8");
+        output.write(generateString(object));
+        output.flush();
+        output.close();
     }
 
     @Override
-    public void serializeCollection(Collection<Department> objects, File output) throws IOException {
-        PrintWriter writer = new PrintWriter(output, "UTF-8");
+    public void serializeCollection(Collection<Department> objects, Writer output) throws IOException {
+        //PrintWriter writer = new PrintWriter(output, "UTF-8");
         for (Department department : objects) {
-            writer.write(generateString(department));
-            writer.write("\n");
+            output.write(generateString(department));
+            output.write("\n");
         }
-        writer.flush();
-        writer.close();
+        output.flush();
+        output.close();
     }
 
     @Override
-    public Department deserialize(File input) throws IOException {
+    public Department deserialize(InputStream input) throws IOException {
         Scanner scanner = new Scanner(input, "UTF-8");
         String inputText = scanner.useDelimiter("\\A").next();
         scanner.close();
@@ -40,7 +40,7 @@ public class DepartmentTextSerializer implements Serializer<Department>{
     }
 
     @Override
-    public Collection<Department> deserializeCollection(File input) throws IOException {
+    public Collection<Department> deserializeCollection(InputStream input) throws IOException {
         Scanner scanner = new Scanner(input, "UTF-8");
         String inputText = scanner.useDelimiter("\\A").next();
         ArrayList<Department> departments = new ArrayList<>();

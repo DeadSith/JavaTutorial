@@ -9,6 +9,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,25 +40,25 @@ public class FacultySerializerTest {
 
     @Test(priority = 1, dataProvider = "serializationProvider")
     public void testSerialize(Serializer<Faculty> s, String fileName) throws Exception {
-        s.serialize(f1, new File(fileName));
+        s.serialize(f1, new PrintWriter(new File(fileName)));
     }
 
     @Test(priority = 2, dataProvider = "serializationProvider")
     public void testDeserialize(Serializer<Faculty> s, String fileName) throws Exception {
-        Faculty f = s.deserialize(new File(fileName));
+        Faculty f = s.deserialize(new FileInputStream(new File(fileName)));
         d.addFaculty(f);
         assertEquals(f, f1);
     }
 
     @Test(priority = 3, dataProvider = "serializationProvider")
     public void testSerializeCollection(Serializer<Faculty> s, String fileName) throws Exception {
-        s.serializeCollection(faculties, new File(fileName));
+        s.serializeCollection(faculties, new PrintWriter(new File(fileName)));
     }
 
 
     @Test(priority = 4, dataProvider = "serializationProvider")
     public void testDeserializeCollection(Serializer<Faculty> s, String fileName) throws Exception {
-        Collection<Faculty> faculties = s.deserializeCollection(new File(fileName));
+        Collection<Faculty> faculties = s.deserializeCollection(new FileInputStream(new File(fileName)));
         for (Faculty f : faculties)
             d.addFaculty(f);
         assertEquals(faculties, this.faculties);

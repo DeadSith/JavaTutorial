@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lab4.serializers.LocalDateDeserializer;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
@@ -63,7 +62,7 @@ public class FacultyBuilder {
      */
     public FacultyBuilder fromString(String input) {
         this.name = RegexHelper.getRegexGroup(input, RegexHelper.NAME_REGEX);
-        this.creationDate = LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX));
+        this.setCreationDate(LocalDate.parse(RegexHelper.getRegexGroup(input, RegexHelper.CREATION_DATE_REGEX)));
         try {
             List<String> teachers = Arrays.asList(RegexHelper.getRegexGroup(input, TEACHERS_REGEX).split(","));
             teachers.removeAll(Arrays.asList("", null));

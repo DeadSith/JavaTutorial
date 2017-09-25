@@ -8,8 +8,9 @@ import lab4.serializers.LocalDateSerializer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 @JsonDeserialize(builder = DepartmentBuilder.class)
 @XmlRootElement
@@ -19,8 +20,6 @@ public class Department implements Comparable<Department> {
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
-
-    private Department(){}
 
     Department(String name, LocalDate creationDate, String phoneNumber, TreeSet<Faculty> faculties) {
         this.faculties = faculties;
@@ -126,22 +125,5 @@ public class Department implements Comparable<Department> {
     @Override
     public int compareTo(Department department) {
         return name.compareTo(department.name);
-    }
-
-    @JsonIgnore
-    public Map<String, Double> getAverageTeacherLoad() {
-        return faculties.stream()
-                .sorted(this::facultyComparator)
-                .collect(Collectors.toMap(Faculty::getName, f -> (double) f.getSubjectsCount() / f.getTeachersCount(), (e1, e2) -> e1, LinkedHashMap::new));
-    }
-
-    private int facultyComparator(Faculty f1, Faculty f2) {
-        double d1 = (double) f1.getSubjectsCount() / f1.getTeachersCount();
-        double d2 = (double) f2.getSubjectsCount() / f2.getTeachersCount();
-        if (Math.abs(d1 - d2) < 0.000001)
-            return 0;
-        else if (d1 < d2)
-            return -1;
-        return 1;
     }
 }
