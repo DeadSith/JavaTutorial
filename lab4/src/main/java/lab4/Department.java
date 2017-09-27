@@ -20,8 +20,9 @@ public class Department implements Comparable<Department> {
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
+    private int id;
 
-    Department(String name, LocalDate creationDate, String phoneNumber, TreeSet<Faculty> faculties) {
+    Department(String name, LocalDate creationDate, String phoneNumber, TreeSet<Faculty> faculties, int id) {
         this.faculties = faculties;
         for (Faculty f : faculties) {
             f.setDepartment(this);
@@ -29,6 +30,7 @@ public class Department implements Comparable<Department> {
         this.name = name;
         this.creationDate = creationDate;
         this.phoneNumber = phoneNumber;
+        this.id = id;
     }
 
     /**

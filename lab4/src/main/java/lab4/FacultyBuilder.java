@@ -18,6 +18,7 @@ public class FacultyBuilder {
     private Department department;
     private TreeSet<String> teachers;
     private TreeSet<String> subjects;
+    private int id;
 
     public FacultyBuilder setName(String name) {
         this.name = name;
@@ -38,6 +39,11 @@ public class FacultyBuilder {
         return this;
     }
 
+    public FacultyBuilder setId(int id) {
+        this.id = id;
+        return this;
+    }
+
     public FacultyBuilder setTeachers(TreeSet<String> teachers) {
         this.teachers = teachers;
         return this;
@@ -53,7 +59,7 @@ public class FacultyBuilder {
             subjects = new TreeSet<>();
         if (teachers == null)
             teachers = new TreeSet<>();
-        return new Faculty(name, creationDate, department, teachers, subjects);
+        return new Faculty(name, creationDate, department, teachers, subjects, id);
     }
 
     /**

@@ -16,6 +16,7 @@ public class DepartmentBuilder {
     private LocalDate creationDate;
     private String phoneNumber;
     private TreeSet<Faculty> faculties;
+    private int id;
 
     public DepartmentBuilder setName(String name) {
         this.name = name;
@@ -27,6 +28,11 @@ public class DepartmentBuilder {
         if (creationDate.isAfter(LocalDate.now()))
             creationDate = LocalDate.now();
         this.creationDate = creationDate;
+        return this;
+    }
+
+    public DepartmentBuilder setId(int id) {
+        this.id = id;
         return this;
     }
 
@@ -43,7 +49,7 @@ public class DepartmentBuilder {
     public Department build() {
         if (faculties == null)
             faculties = new TreeSet<>();
-        return new Department(name, creationDate, phoneNumber, faculties);
+        return new Department(name, creationDate, phoneNumber, faculties, id);
     }
 
     /**
