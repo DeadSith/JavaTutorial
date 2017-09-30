@@ -1,15 +1,10 @@
 package lab4.services;
 
 import lab4.Department;
-import lab4.DepartmentBuilder;
 import lab4.Faculty;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DepartmentService {
@@ -36,37 +31,5 @@ public class DepartmentService {
         return 1;
     }
 
-    /**
-     * @param conn connection to database. It will be closed
-     * @return all departments in db, or empty collection if there was error
-     */
-    public static Collection<Department> getDepartments(Connection conn) {
-        List<Department> departments = new LinkedList<>();
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM java.departments");
-            while (rs.next()) {
-                TreeSet<Faculty> f = getFaculties(conn, rs.getInt("id"));
-                Department d = new DepartmentBuilder().setId(rs.getInt("id"))
-                        .setName(rs.getString("name")).setPhoneNumber(rs.getString("phone_number"))
-                        .setCreationDate(rs.getDate("creation_date").toLocalDate())
-                        .setFaculties(f).build();
-            }
-            conn.close();
-        } catch (Exception ignored) {
 
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return departments;
-    }
-
-    private static TreeSet<Faculty> getFaculties(Connection conn, int id) {
-        //todo
-        throw new NotImplementedException();
-    }
 }
