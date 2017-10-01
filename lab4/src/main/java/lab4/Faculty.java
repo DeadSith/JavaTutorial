@@ -111,6 +111,15 @@ public class Faculty implements Comparable<Faculty> {
         return name;
     }
 
+    @JsonIgnore
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @JsonSerialize(using = LocalDateSerializer.class)
     public LocalDate getCreationDate() {
         return creationDate;
