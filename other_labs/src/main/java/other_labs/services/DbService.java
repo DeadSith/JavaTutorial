@@ -7,7 +7,6 @@ import other_labs.FacultyBuilder;
 
 import java.sql.*;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.*;
 
 public class DbService {
@@ -143,37 +142,32 @@ public class DbService {
 
 
     /**
-     * @param fieldName name of field to update
-     * @param value     new value of field
-     * @param id        faculty to update
+     * @param f Faculty to update
      * @return update was successful
      */
-    public static boolean updateFaculty(String fieldName, Object value, int id) throws SQLException, ClassNotFoundException {
-        if (fieldName.equals("teachers") || fieldName.equals("subjects"))
-            value = concatTreeSet((Set<String>) value);
-        if (fieldName.equals("creation_date"))
-            value = Date.valueOf((LocalDate) value);
+    public static boolean updateFaculty(Faculty f) throws SQLException, ClassNotFoundException {
         Connection conn = getNewConnection();
         Statement st = conn.createStatement();
-        int rs = st.executeUpdate("UPDATE java.faculties SET " + fieldName
-                + "='" + value.toString() + "' WHERE id=" + id + ";");
+        int rs = st.executeUpdate("UPDATE java.faculties SET name='" + f.getName()
+                + "', creation_date='" + f.getCreationDate() + "', teachers='"
+                + concatTreeSet(f.getTeachers()) + "', subjects='"
+                + concatTreeSet(f.getSubjects()) + "',department="
+                + f.getDepartment().getId() + " WHERE id=" + f.getId() + ";");
         conn.close();
         return (rs != 0);
     }
 
     /**
-     * @param fieldName name of field to update
-     * @param value     new value of field
-     * @param id        department to update
+     * @param d department to update
      * @return update was successful
      */
-    public static boolean updateDepartment(String fieldName, Object value, int id) throws SQLException, ClassNotFoundException {
-        if (fieldName.equals("creation_date"))
-            value = Date.valueOf((LocalDate) value);
+    public static boolean updateDepartment(Department d) throws SQLException, ClassNotFoundException {
+
         Connection conn = getNewConnection();
         Statement st = conn.createStatement();
-        int rs = st.executeUpdate("UPDATE java.departments SET " + fieldName
-                + "='" + value.toString() + "' WHERE id=" + id + ";");
+        int rs = st.executeUpdate("UPDATE java.departments SET name='" + d.getName()
+                + "', creation_date='" + Date.valueOf(d.getCreationDate()) + "', phone_number='"
+                + d.getPhoneNumber() + "' WHERE id=" + d.getId() + ";");
         conn.close();
         return (rs != 0);
     }
@@ -201,14 +195,25 @@ public class DbService {
     /**
      * creates new schema
      */
-    public static void createDatabase() throws SQLException, ClassNotFoundException {
+    public static void setDatabase() throws SQLException, ClassNotFoundException {
         Connection conn = getNewConnection();
+        createSchema(conn);
+        createDepartmentsTable(conn);
+        createFacultiesTable(conn);
+        conn.close();
+    }
+
+    private static void createSchema(Connection conn) throws SQLException {
         Statement st = conn.createStatement();
         st.execute("CREATE SCHEMA java\n" +
                 "    AUTHORIZATION \"user\";\n" +
                 "\n" +
                 "ALTER DEFAULT PRIVILEGES IN SCHEMA java\n" +
                 "GRANT ALL ON TABLES TO \"user\";");
+    }
+
+    private static void createDepartmentsTable(Connection conn) throws SQLException {
+        Statement st = conn.createStatement();
         st.execute("CREATE TABLE java.departments\n" +
                 "(\n" +
                 "    creation_date DATE,\n" +
@@ -226,6 +231,10 @@ public class DbService {
                 "    OWNER TO \"user\";\n" +
                 "\n" +
                 "GRANT ALL ON TABLE java.departments TO \"user\";");
+    }
+
+    private static void createFacultiesTable(Connection conn) throws SQLException {
+        Statement st = conn.createStatement();
         st.execute("CREATE TABLE java.faculties\n" +
                 "(\n" +
                 "    id INTEGER NOT NULL DEFAULT nextval('java.faculties_id_seq'::REGCLASS),\n" +
@@ -250,7 +259,6 @@ public class DbService {
                 "    OWNER TO \"user\";\n" +
                 "\n" +
                 "GRANT ALL ON TABLE java.faculties TO \"user\";");
-        conn.close();
     }
 
     private static String concatTreeSet(Set<String> input) {

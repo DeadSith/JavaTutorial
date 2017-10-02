@@ -120,6 +120,10 @@ public class Faculty implements Comparable<Faculty> {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @JsonSerialize(using = LocalDateSerializer.class)
     public LocalDate getCreationDate() {
         return creationDate;

@@ -1,8 +1,8 @@
 package other_labs.services;
 
-import other_labs.*;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import other_labs.*;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -42,13 +42,15 @@ public class DbServiceTest {
 
     @Test(priority = 2)
     public void testUpdateFaculty() throws Exception {
-        DbService.updateFaculty("creation_date", LocalDate.of(1994, 1, 1), f1.getId());
-        assertEquals(DbService.getFaculty(f1.getId()).getCreationDate(), LocalDate.of(1994, 1, 1));
+        f1.setName("name1");
+        DbService.updateFaculty(f1);
+        assertEquals(DbService.getFaculty(f1.getId()).getName(), "name1");
     }
 
     @Test(priority = 2)
     public void testUpdateDepartment() throws Exception {
-        DbService.updateDepartment("phone_number", "+38000078456", department.getId());
+        department.setPhoneNumber("+38000078456");
+        DbService.updateDepartment(department);
         assertEquals(DbService.getDepartment(department.getId()).getPhoneNumber(), "+38000078456");
     }
 
