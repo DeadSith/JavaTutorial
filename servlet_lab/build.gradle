@@ -1,0 +1,21 @@
+group 'com.sith'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.testng:testng:6.10'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.7.v20170914'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '9.4.7.v20170914'
+}
+
+test {
+    useTestNG()
+}
