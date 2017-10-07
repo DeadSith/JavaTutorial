@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Faculty {
+public class Faculty implements Comparable<Faculty> {
     private String name;
     private LocalDate creationDate;
     private Set<String> teachers;
@@ -111,5 +111,10 @@ public class Faculty {
 
     public LocalDate getCreationDate() {
         return creationDate;
+    }
+
+    @Override
+    public int compareTo(Faculty faculty) {
+        return name.compareTo(faculty.name);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Department {
+public class Department implements Comparable<Department> {
     private TreeSet<Faculty> faculties;
     private String name;
     private LocalDate creationDate;
@@ -115,5 +115,10 @@ public class Department {
 
     public int getFacultiesCount() {
         return faculties.size();
+    }
+
+    @Override
+    public int compareTo(Department department) {
+        return name.compareTo(department.name);
     }
 }
