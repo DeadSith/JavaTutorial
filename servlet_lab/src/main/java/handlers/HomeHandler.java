@@ -25,6 +25,9 @@ public class HomeHandler extends HttpServlet {
 
     }
 
+    /**
+     * writes beginning of file and calls the method to render page
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Set response content type
@@ -45,6 +48,9 @@ public class HomeHandler extends HttpServlet {
         writeMain(out);
     }
 
+    /**
+     * writes list of departments
+     */
     private void writeMain(PrintWriter writer) {
         List<Department> departments;
         try {
@@ -65,10 +71,19 @@ public class HomeHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * writes error message
+     */
     private void writeError(PrintWriter writer) {
         writer.write("<div class=\"alert alert-danger\" role=\"alert\">Something went wrong</div>");
+        GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * searches faculty/department by name
+     *
+     * @param name name of faculty/department to find
+     */
     private void writeFind(String name, PrintWriter writer) {
         try {
             Connection conn = GeneralContext.getNewConnection();
@@ -87,8 +102,13 @@ public class HomeHandler extends HttpServlet {
         } catch (Exception ignored) {
             writer.write("<div class=\"alert alert-warning\" role=\"alert\">Something went wrong</div>");
         }
+        GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * @param request search condition
+     * @param response redirect to search
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect("/find/" + request.getParameter("search"));

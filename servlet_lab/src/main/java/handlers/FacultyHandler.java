@@ -18,15 +18,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FacultyHandler extends HttpServlet {
-    Pattern getPattern = Pattern.compile("/faculty/(\\d+)");
-    Pattern addPattern = Pattern.compile("/faculty/add/(\\d+)");
-    Pattern editPattern = Pattern.compile("/faculty/edit/(\\d+)");
-    Pattern deletePattern = Pattern.compile("/faculty/delete/(\\d+)");
+    final Pattern getPattern = Pattern.compile("/faculty/(\\d+)");
+    final Pattern addPattern = Pattern.compile("/faculty/add/(\\d+)");
+    final Pattern editPattern = Pattern.compile("/faculty/edit/(\\d+)");
+    final Pattern deletePattern = Pattern.compile("/faculty/delete/(\\d+)");
 
     public void init() throws ServletException {
         // Do required initialization
     }
 
+    /**
+     * writes beginning of file. Chooses which page to render and calls required method
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Set response content type
@@ -52,6 +55,11 @@ public class FacultyHandler extends HttpServlet {
         response.sendRedirect("");
     }
 
+    /**
+     * writes information about faculty
+     *
+     * @param id id of faculty to write info about
+     */
     private void writeFaculty(PrintWriter writer, int id) {
         try {
             Faculty f = FacultyContext.getFaculty(id);
@@ -84,6 +92,10 @@ public class FacultyHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * writes form to create faculty for department with {@code id}
+     * @param id id of parent
+     */
     private void writeAddForm(PrintWriter writer, int id) {
         writer.write("<form action=\"/faculty/add/" + id + "\" method=\"post\">\n" +
                 "  <div class=\"form-group row\">\n" +
@@ -107,6 +119,10 @@ public class FacultyHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * writes form to change existing faculty
+     * @param id id of faculty
+     */
     private void writeEditForm(PrintWriter writer, int id) {
         try {
             Faculty f = FacultyContext.getFaculty(id);
@@ -139,6 +155,9 @@ public class FacultyHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * chooses method to use with post
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
@@ -159,11 +178,16 @@ public class FacultyHandler extends HttpServlet {
         }
         match = deletePattern.matcher(path);
         if (match.matches()) {
-            deleteDepartment(Integer.parseInt(match.group(1)));
+            deleteFaculty(Integer.parseInt(match.group(1)));
         }
         response.sendRedirect("/");
     }
 
+    /**
+     * creates new faculty
+     * @param departmentId id of parent department
+     * @return id of created Faculty or 0, if failed
+     */
     private int addFaculty(HttpServletRequest request, int departmentId) {
         try {
             Department d = DepartmentContext.getDepartment(departmentId);
@@ -191,6 +215,11 @@ public class FacultyHandler extends HttpServlet {
         }
     }
 
+    /**
+     * updates existing faculty
+     * @param id id of faculty to change
+     * @return whether update was successful
+     */
     private boolean editFaculty(HttpServletRequest request, int id) {
         try {
             Faculty f = FacultyContext.getFaculty(id);
@@ -214,7 +243,10 @@ public class FacultyHandler extends HttpServlet {
         }
     }
 
-    private void deleteDepartment(int id) {
+    /**
+     * @param id id of faculty to delete
+     */
+    private void deleteFaculty(int id) {
         try {
             FacultyContext.deleteFaculty(id);
         } catch (Exception ignored) {

@@ -12,26 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DepartmentHandler extends HttpServlet {
-    List<Department> departments;
-    Pattern getPattern = Pattern.compile("/department/(\\d+)");
-    Pattern editPattern = Pattern.compile("/department/edit/(\\d+)");
-    Pattern deletePattern = Pattern.compile("/department/delete/(\\d+)");
+    final Pattern getPattern = Pattern.compile("/department/(\\d+)");
+    final Pattern editPattern = Pattern.compile("/department/edit/(\\d+)");
+    final Pattern deletePattern = Pattern.compile("/department/delete/(\\d+)");
 
 
     public void init() throws ServletException {
-        try {
-            departments = DepartmentContext.getDepartments();
-        } catch (Exception ignored) {
-            departments = new ArrayList<>();
         }
-    }
 
+    /**
+     * writes beginning of file. Chooses which page to render and calls required method
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Set response content type
@@ -56,6 +51,11 @@ public class DepartmentHandler extends HttpServlet {
         response.sendRedirect("/");
     }
 
+    /**
+     * writes info about department with id {@code id}
+     *
+     * @param id department to write about
+     */
     private void writeDepartment(PrintWriter writer, int id) {
         try {
             Department d = DepartmentContext.getDepartment(id);
@@ -86,6 +86,9 @@ public class DepartmentHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * writes from to add new department
+     */
     private void writeAddForm(PrintWriter writer) {
         writer.write("<form action=\"/department/add\" method=\"post\">\n" +
                 "  <div class=\"form-group row\">\n" +
@@ -105,6 +108,10 @@ public class DepartmentHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * writes from to edit department with id {@code id}
+     * @param id department to edit
+     */
     private void writeEditForm(PrintWriter writer, int id) {
         try {
             Department d = DepartmentContext.getDepartment(id);
@@ -125,6 +132,9 @@ public class DepartmentHandler extends HttpServlet {
         GeneralWriter.writeEnd(writer);
     }
 
+    /**
+     * chooses method to use with post
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
@@ -149,6 +159,10 @@ public class DepartmentHandler extends HttpServlet {
         response.sendRedirect("/");
     }
 
+    /**
+     * creates new department
+     * @return id of created department or 0, if failed
+     */
     private int addDepartment(HttpServletRequest request) {
         Department d = new DepartmentBuilder()
                 .setName(request.getParameter("name"))
@@ -163,6 +177,11 @@ public class DepartmentHandler extends HttpServlet {
         }
     }
 
+    /**
+     * updates fields of department with id {@code id}
+     * @param id id of department to edit
+     * @return whether updated successfully
+     */
     private boolean editDepartment(HttpServletRequest request, int id) {
         try {
             Department d = DepartmentContext.getDepartment(id);
@@ -176,6 +195,9 @@ public class DepartmentHandler extends HttpServlet {
         }
     }
 
+    /**
+     * @param id department to delete
+     */
     private void deleteDepartment(int id) {
         try {
             DepartmentContext.deleteDepartment(id);

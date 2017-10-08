@@ -3,6 +3,9 @@ package handlers;
 import java.io.PrintWriter;
 
 public class GeneralWriter {
+    /**
+     * @param writer writes beginning of document
+     */
     public static void writeStart(PrintWriter writer) {
         writer.write("<!Doctype HTML>\n" +
                 "\n" +
@@ -34,6 +37,9 @@ public class GeneralWriter {
                 "<main>\n<div class=\"container\">\n");
     }
 
+    /**
+     * @param writer writes end of document
+     */
     public static void writeEnd(PrintWriter writer) {
         writer.write("\n</div>\n</main>\n<script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
                 "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js\" integrity=\"sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4\" crossorigin=\"anonymous\"></script>\n" +

@@ -127,6 +127,10 @@ public class FacultyContext {
         conn.close();
     }
 
+    /**
+     * @param facultyId
+     * @return department to which faculty with {@code facultyId} belongs
+     */
     public static Department getParentDepartment(int facultyId) throws SQLException, ClassNotFoundException {
         Connection conn = getNewConnection();
         Statement st = conn.createStatement();
