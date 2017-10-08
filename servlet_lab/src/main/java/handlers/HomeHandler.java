@@ -13,19 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeHandler extends HttpServlet {
-    List<Department> departments;
+
 
     public void init() throws ServletException {
-        try {
-            departments = DepartmentContext.getDepartments();
-        } catch (Exception ignored) {
-            departments = new ArrayList<>();
-        }
+
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Set response content type
+        List<Department> departments;
+        try {
+            departments = DepartmentContext.getDepartments();
+        } catch (Exception ignored) {
+            departments = new ArrayList<>();
+        }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         GeneralWriter.writeStart(out);
@@ -44,6 +46,6 @@ public class HomeHandler extends HttpServlet {
     }
 
     public void destroy() {
-        departments = null;
+
     }
 }

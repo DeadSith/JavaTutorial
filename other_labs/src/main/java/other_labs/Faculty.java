@@ -25,6 +25,7 @@ public class Faculty implements Comparable<Faculty> {
         this.department = department;
         this.teachers = teachers;
         this.subjects = subjects;
+        this.id = id;
     }
 
     @Override

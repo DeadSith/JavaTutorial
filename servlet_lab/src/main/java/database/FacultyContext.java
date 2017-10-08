@@ -1,5 +1,7 @@
 package database;
 
+import models.Department;
+import models.DepartmentBuilder;
 import models.Faculty;
 import models.FacultyBuilder;
 
@@ -49,7 +51,8 @@ public class FacultyContext {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM java.faculties WHERE department=" + parentId + ";");
         while (rs.next()) {
-            Faculty f = new FacultyBuilder().setId(rs.getInt("id"))
+            Faculty f = new FacultyBuilder()
+                    .setId(rs.getInt("id"))
                     .setName(rs.getString("name"))
                     .setCreationDate(rs.getDate("creation_date").toLocalDate())
                     .setTeachers(new TreeSet<>(Arrays.asList(rs.getString("teachers").split(","))))
@@ -70,7 +73,8 @@ public class FacultyContext {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM java.faculties WHERE id=" + id + ";");
         if (rs.next()) {
-            Faculty f = new FacultyBuilder().setId(rs.getInt("id"))
+            Faculty f = new FacultyBuilder()
+                    .setId(rs.getInt("id"))
                     .setName(rs.getString("name"))
                     .setCreationDate(rs.getDate("creation_date").toLocalDate())
                     .setTeachers(new TreeSet<>(Arrays.asList(rs.getString("teachers").split(","))))
@@ -122,6 +126,16 @@ public class FacultyContext {
         Statement st = conn.createStatement();
         int rs = st.executeUpdate("DELETE FROM java.faculties WHERE id=" + id + ";");
         conn.close();
+    }
+
+    public static Department getParentDepartment(int facultyId) throws SQLException, ClassNotFoundException {
+        Connection conn = getNewConnection();
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery("SELECT id, name FROM java.departments WHERE id=(SELECT department FROM java.faculties WHERE id="+facultyId+")");
+        if (rs.next()){
+            return new DepartmentBuilder().setId(rs.getInt("id")).setName(rs.getString("name")).build();
+        }
+        return null;
     }
 
     private static String concatTreeSet(Set<String> input) {
