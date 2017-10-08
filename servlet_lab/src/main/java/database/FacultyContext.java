@@ -112,8 +112,7 @@ public class FacultyContext {
         int rs = st.executeUpdate("UPDATE java.faculties SET name='" + f.getName()
                 + "', creation_date='" + f.getCreationDate() + "', teachers='"
                 + concatTreeSet(f.getTeachers()) + "', subjects='"
-                + concatTreeSet(f.getSubjects()) + "',department="
-                + f.getDepartment().getId() + " WHERE id=" + f.getId() + ";");
+                + concatTreeSet(f.getSubjects()) + "' WHERE id=" + f.getId() + ";");
         conn.close();
         return (rs != 0);
     }

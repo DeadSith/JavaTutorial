@@ -110,6 +110,11 @@ public class Faculty implements Comparable<Faculty> {
         this.name = name;
     }
 
+    public void clearTeachersSubjects() {
+        teachers.clear();
+        subjects.clear();
+    }
+
     public LocalDate getCreationDate() {
         return creationDate;
     }
