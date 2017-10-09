@@ -34,7 +34,6 @@ public class HomeHandler extends HttpServlet {
         String path = request.getRequestURI();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        GeneralWriter.writeStart(out);
         if (path.equals("/error")) {
             writeError(out);
             return;
@@ -45,30 +44,21 @@ public class HomeHandler extends HttpServlet {
             writeFind(m.group(1), out);
             return;
         }
-        writeMain(out);
+        writeMain(request, response);
     }
 
     /**
      * writes list of departments
      */
-    private void writeMain(PrintWriter writer) {
+    private void writeMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Department> departments;
         try {
             departments = DepartmentContext.getDepartments();
         } catch (Exception ignored) {
             departments = new ArrayList<>();
         }
-        writer.write("<a class=\"btn btn-primary\" href=\"/department/add\">Add new department</a>");
-        if (departments.size() == 0)
-            writer.write("<div class=\"alert alert-danger\" role=\"alert\">There are no departments. Add one to begin.</div>");
-        else {
-            writer.write("<h3>Current departments:</h3><ul>");
-            for (Department d : departments) {
-                writer.write("<li><a href=\"/department/" + d.getId() + "\">" + d.getName() + "</a></li>");
-            }
-            writer.write("</ul>");
-        }
-        GeneralWriter.writeEnd(writer);
+        request.setAttribute("departments", departments);
+        request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
     }
 
     /**
