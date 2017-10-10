@@ -3,6 +3,9 @@ package handlers;
 import database.DepartmentContext;
 import database.GeneralContext;
 import models.Department;
+import models.DepartmentBuilder;
+import models.Faculty;
+import models.FacultyBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,13 +38,13 @@ public class HomeHandler extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         if (path.equals("/error")) {
-            writeError(out);
+            writeError(request, response);
             return;
         }
         Pattern p = Pattern.compile("/find/?(.+)");
         Matcher m = p.matcher(path);
         if (m.matches()) {
-            writeFind(m.group(1), out);
+            writeFind(m.group(1), request, response);
             return;
         }
         writeMain(request, response);
@@ -58,15 +61,15 @@ public class HomeHandler extends HttpServlet {
             departments = new ArrayList<>();
         }
         request.setAttribute("departments", departments);
-        request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/views/home/index.jsp").forward(request, response);
     }
 
     /**
      * writes error message
      */
-    private void writeError(PrintWriter writer) {
-        writer.write("<div class=\"alert alert-danger\" role=\"alert\">Something went wrong</div>");
-        GeneralWriter.writeEnd(writer);
+    private void writeError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/views/home/error.jsp").forward(request, response);
+
     }
 
     /**
@@ -74,25 +77,26 @@ public class HomeHandler extends HttpServlet {
      *
      * @param name name of faculty/department to find
      */
-    private void writeFind(String name, PrintWriter writer) {
+    private void writeFind(String name, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Connection conn = GeneralContext.getNewConnection();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT id, name FROM java.departments WHERE lower(name) LIKE '%" + name.toLowerCase() + "%';");
-            writer.write("<h4>Departments: </h4><ul>");
+            List<Department> departments = new ArrayList<>();
             while (rs.next()) {
-                writer.write("<li><a href=\"/department/" + rs.getInt("id") + "\">" + rs.getString("name") + "</a></li>");
+                departments.add(new DepartmentBuilder().setId(rs.getInt("id")).setName(rs.getString("name")).build());
             }
-            writer.write("</ul>\n<h4>Faculties: </h4><ul>");
+            List<Faculty> faculties = new ArrayList<>();
             rs = st.executeQuery("SELECT id, name FROM java.faculties WHERE lower(name) LIKE '%" + name.toLowerCase() + "%';");
             while (rs.next()) {
-                writer.write("<li><a href=\"/faculty/" + rs.getInt("id") + "\">" + rs.getString("name") + "</a></li>");
+                faculties.add(new FacultyBuilder().setId(rs.getInt("id")).setName(rs.getString("name")).build());
             }
-            writer.write("</ul>");
+            request.setAttribute("departments", departments);
+            request.setAttribute("faculties", faculties);
+            request.getRequestDispatcher("/WEB-INF/views/home/find.jsp").forward(request, response);
         } catch (Exception ignored) {
-            writer.write("<div class=\"alert alert-warning\" role=\"alert\">Something went wrong</div>");
+            request.getRequestDispatcher("/WEB-INF/views/home/error.jsp").forward(request, response);
         }
-        GeneralWriter.writeEnd(writer);
     }
 
     /**

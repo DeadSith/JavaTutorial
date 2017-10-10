@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="models.Department" %>
 <%@ page import="java.util.List" %>
-<jsp:include page="includes/start.jsp"/>
+<jsp:include page="../includes/start.jsp"/>
 
 <a class="btn btn-primary" href="/department/add">Add new department</a>
 <%
@@ -21,4 +21,4 @@
 
 </ul>
 <%}%>
-<jsp:include page="includes/end.jsp"/>
+<jsp:include page="../includes/end.jsp"/>

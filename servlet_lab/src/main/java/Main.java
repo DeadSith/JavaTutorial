@@ -6,7 +6,6 @@ import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
 import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
@@ -59,15 +58,9 @@ public class Main {
         servletContextHandler.setResourceBase(baseUri.toASCIIString());
         // Since this is a ServletContextHandler we must manually configure JSP support.
         enableEmbeddedJspSupport(servletContextHandler);
-        servletContextHandler.addServlet(HomeHandler.class, "/home");
-        servletContextHandler.addServlet(HomeHandler.class, "/error");
-        servletContextHandler.addServlet(HomeHandler.class, "/find/");
+        servletContextHandler.addServlet(HomeHandler.class, "/");
         servletContextHandler.addServlet(DepartmentHandler.class, "/department/*");
         servletContextHandler.addServlet(FacultyHandler.class, "/faculty/*");
-        ServletHolder holderDefault = new ServletHolder("default", DefaultServlet.class);
-        holderDefault.setInitParameter("resourceBase", baseUri.toASCIIString());
-        holderDefault.setInitParameter("dirAllowed", "true");
-        servletContextHandler.addServlet(holderDefault, "/");
         server.setHandler(servletContextHandler);
         server.start();
     }
@@ -166,4 +159,3 @@ public class Main {
     }
 
 }
-
