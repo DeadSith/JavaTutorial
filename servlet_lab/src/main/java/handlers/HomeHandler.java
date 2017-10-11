@@ -61,7 +61,7 @@ public class HomeHandler extends HttpServlet {
             departments = new ArrayList<>();
         }
         request.setAttribute("departments", departments);
-        request.getRequestDispatcher("WEB-INF/views/home/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/home/index.jsp").forward(request, response);
     }
 
     /**

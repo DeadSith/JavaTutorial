@@ -39,20 +39,20 @@ public class FacultyHandler extends HttpServlet {
         GeneralWriter.writeStart(out);
         Matcher match = getPattern.matcher(path);
         if (match.matches()) {
-            writeFaculty(out, Integer.parseInt(match.group(1)));
+            writeFaculty(request, response, Integer.parseInt(match.group(1)));
             return;
         }
         match = addPattern.matcher(path);
         if (match.matches()) {
-            writeAddForm(out, Integer.parseInt(match.group(1)));
+            writeAddForm(request, response, Integer.parseInt(match.group(1)));
             return;
         }
         match = editPattern.matcher(path);
         if (match.matches()) {
-            writeEditForm(out, Integer.parseInt(match.group(1)));
+            writeEditForm(request, response, Integer.parseInt(match.group(1)));
             return;
         }
-        response.sendRedirect("");
+        response.sendRedirect("/error");
     }
 
     /**
@@ -60,99 +60,42 @@ public class FacultyHandler extends HttpServlet {
      *
      * @param id id of faculty to write info about
      */
-    private void writeFaculty(PrintWriter writer, int id) {
+    private void writeFaculty(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        request.setAttribute("id", id);
         try {
             Faculty f = FacultyContext.getFaculty(id);
             Department d = FacultyContext.getParentDepartment(id);
-            writer.write("<a class=\"btn btn-warning\" role=\"button\" href=\"/faculty/edit/" + id + "\">Edit</a>" +
-                    "<form action=\"/faculty/delete/" + id + "\" method=post style=\"display:inline;\">" +
-                    "<button class=\"btn btn-danger\" type=\"submit\" role=\"button\">Delete</button></form>" +
-                    "<dl class=\"row\">" +
-                    "<dt class=\"col-sm-3\">Name: </dt>\n" +
-                    "<dd class=\"col-sm-9\">" + f.getName() + "</dd>" +
-                    "<dt class=\"col-sm-3\">Created at: </dt>\n" +
-                    "<dd class=\"col-sm-9\">" + f.getCreationDate() + "</dd>" +
-                    "<dt class=\"col-sm-3\">Department: </dt>\n" +
-                    "<dd class=\"col-sm-9\"><a href=\"/department/" + d.getId() + "\">" + d.getName() + "</a></dd>" +
-                    "<dt class=\"col-sm-3\">Current teachers: </dt>" +
-                    "<dd class=\"col-sm-9\"><ul>");
-            for (String t : f.getTeachers()) {
-                writer.write("<li>" + t + "</li>");
-            }
-            writer.write("</ul></dd>" +
-                    "<dt class=\"col-sm-3\">Current subjects: </dt>" +
-                    "<dd class=\"col-sm-9\"><ul>");
-            for (String t : f.getSubjects()) {
-                writer.write("<li>" + t + "</li>");
-            }
-            writer.write("</ul></dd>\n</dl>");
+            request.setAttribute("faculty", f);
+            request.setAttribute("department", d);
         } catch (Exception ignored) {
-            writer.write("<div class=\"alert alert-danger\" role=\"alert\">There is no faculty with id " + id + "!</div>");
         }
-        GeneralWriter.writeEnd(writer);
+        request.getRequestDispatcher("/WEB-INF/views/faculty/index.jsp").forward(request, response);
     }
 
     /**
      * writes form to create faculty for department with {@code id}
+     *
      * @param id id of parent
      */
-    private void writeAddForm(PrintWriter writer, int id) {
-        writer.write("<form action=\"/faculty/add/" + id + "\" method=\"post\">\n" +
-                "  <div class=\"form-group row\">\n" +
-                "    <label for=\"name\" class=\"col-sm-2 col-form-label\">Name: </label>\n" +
-                "    <div class=\"col-sm-10\">\n<input type=\"text\" class=\"form-control\" name=\"name\"  placeholder=\"Enter name\">\n</div>\n" +
-                "  </div>\n" +
-                "  <div class=\"form-group row\">\n" +
-                "    <label for=\"creationDate\" class=\"col-sm-2 col-form-label\">Creation date: </label>\n" +
-                "    <div class=\"col-sm-10\">\n<input type=\"date\" class=\"form-control\" name=\"creationDate\">\n</div>\n" +
-                "  </div>\n" +
-                "  <div class=\"form-group row\">\n" +
-                "    <label for=\"teachers\" class=\"col-sm-2 col-form-label\">Teachers(separate with new line): </label>\n" +
-                "    <div class=\"col-sm-10\">\n<textarea class=\"form-control\" name=\"teachers\" rows=\"4\"></textarea>\n</div>\n" +
-                "  </div>\n" +
-                "  <div class=\"form-group row\">\n" +
-                "    <label for=\"subjects\" class=\"col-sm-2 col-form-label\">Subjects(separate with new line): </label>\n" +
-                "    <div class=\"col-sm-10\">\n<textarea class=\"form-control\" name=\"subjects\" rows=\"4\"></textarea>\n</div>\n" +
-                "  </div>\n" +
-                "  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n" +
-                "</form>");
-        GeneralWriter.writeEnd(writer);
+    private void writeAddForm(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        request.setAttribute("id", id);
+        request.getRequestDispatcher("/WEB-INF/views/faculty/add.jsp").forward(request, response);
     }
 
     /**
      * writes form to change existing faculty
+     *
      * @param id id of faculty
      */
-    private void writeEditForm(PrintWriter writer, int id) {
+    private void writeEditForm(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        request.setAttribute("id", id);
         try {
             Faculty f = FacultyContext.getFaculty(id);
-            writer.write("<form action=\"/faculty/edit/" + id + "\" method=\"post\">\n" +
-                    "  <div class=\"form-group row\">\n" +
-                    "    <label for=\"name\" class=\"col-sm-2 col-form-label\">Name: </label>\n" +
-                    "    <div class=\"col-sm-10\">\n<input type=\"text\" class=\"form-control\" name=\"name\"  value=\"" + f.getName() + "\">\n</div>\n" +
-                    "  </div>\n" +
-                    "  <div class=\"form-group row\">\n" +
-                    "    <label for=\"teachers\" class=\"col-sm-2 col-form-label\">Teachers(separate with new line): </label>\n" +
-                    "    <div class=\"col-sm-10\">\n<textarea class=\"form-control\" name=\"teachers\" rows=\"4\">");
-            for (String t : f.getTeachers()) {
-                writer.write(t + "&#13;&#10;");
-            }
-            writer.write("</textarea>\n</div>\n" +
-                    "  </div>\n" +
-                    "  <div class=\"form-group row\">\n" +
-                    "    <label for=\"subjects\" class=\"col-sm-2 col-form-label\">Subjects(separate with new line): </label>\n" +
-                    "    <div class=\"col-sm-10\">\n<textarea class=\"form-control\" name=\"subjects\" rows=\"4\">");
-            for (String s : f.getSubjects()) {
-                writer.write(s + "&#13;&#10;");
-            }
-            writer.write("</textarea>\n</div>\n" +
-                    "  </div>\n" +
-                    "  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n" +
-                    "</form>");
+            request.setAttribute("faculty", f);
         } catch (Exception ignored) {
-            writer.write("<div class=\"alert alert-danger\" role=\"alert\">There is no faculty with id " + id + "!</div>");
         }
-        GeneralWriter.writeEnd(writer);
+        request.getRequestDispatcher("/WEB-INF/views/faculty/edit.jsp").forward(request, response);
+
     }
 
     /**
@@ -185,6 +128,7 @@ public class FacultyHandler extends HttpServlet {
 
     /**
      * creates new faculty
+     *
      * @param departmentId id of parent department
      * @return id of created Faculty or 0, if failed
      */
@@ -195,11 +139,11 @@ public class FacultyHandler extends HttpServlet {
             TreeSet<String> subjects = new TreeSet<>();
             for (String s : request.getParameter("teachers").split("\n")) {
                 if (!s.isEmpty())
-                    teachers.add(s);
+                    teachers.add(s.trim());
             }
             for (String s : request.getParameter("subjects").split("\n")) {
                 if (!s.isEmpty())
-                    subjects.add(s);
+                    subjects.add(s.trim());
             }
             Faculty f = new FacultyBuilder()
                     .setDepartment(d)
@@ -217,6 +161,7 @@ public class FacultyHandler extends HttpServlet {
 
     /**
      * updates existing faculty
+     *
      * @param id id of faculty to change
      * @return whether update was successful
      */
@@ -225,12 +170,14 @@ public class FacultyHandler extends HttpServlet {
             Faculty f = FacultyContext.getFaculty(id);
             f.clearTeachersSubjects();
             for (String s : request.getParameter("teachers").split("\n")) {
+                s = s.trim();
                 if (!s.isEmpty() && !s.equals("\r")) {
                     s = s.replace("\r", "");
                     f.addTeacher(s);
                 }
             }
             for (String s : request.getParameter("subjects").split("\n")) {
+                s = s.trim();
                 if (!s.isEmpty() && !s.equals("\r")) {
                     s = s.replace("\r", "");
                     f.addSubject(s);
