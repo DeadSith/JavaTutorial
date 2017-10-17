@@ -1,6 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="faculty" scope="request" type="models.Faculty"/>
 <jsp:include page="../includes/start.jsp"/>
+<c:if test="${error}">
+    <div class="alert alert-danger" role="alert">
+        Name, teacher names and subjects can contain only letters.
+    </div>
+</c:if>
 <c:choose>
     <c:when test="${faculty==null}">
         <div class="alert alert-danger" role="alert">There is no faculty with id ${id}!</div>

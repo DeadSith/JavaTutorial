@@ -1,6 +1,11 @@
 <jsp:useBean id="department" scope="request" type="models.Department"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../includes/start.jsp"/>
+<c:if test="${error}">
+    <div class="alert alert-danger" role="alert">
+        Name can contain only letters. Phone number should be in form +xxxxxxxxxxx.
+    </div>
+</c:if>
 <c:choose>
     <c:when test="${department!=null}">
         <form action="/department/edit/${id}" method="post">

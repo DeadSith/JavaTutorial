@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -106,17 +107,17 @@ public class FacultyHandler extends HttpServlet {
         String path = request.getRequestURI();
         Matcher match = editPattern.matcher(path);
         if (match.matches()) {
-            if (editFaculty(request, Integer.parseInt(match.group(1))))
-                response.sendRedirect("/faculty/" + match.group(1));
-            else response.sendRedirect("/error");
+            editFaculty(request, response, Integer.parseInt(match.group(1)));
             return;
         }
         match = addPattern.matcher(path);
         if (match.matches()) {
-            int i = addFaculty(request, Integer.parseInt(match.group(1)));
-            if (i != 0)
-                response.sendRedirect("/faculty/" + i);
-            else response.sendRedirect("/error");
+            try {
+                addFaculty(request, response, Integer.parseInt(match.group(1)));
+            } catch (SQLException | ClassNotFoundException e) {
+                response.sendRedirect("/error");
+            }
+
             return;
         }
         match = deletePattern.matcher(path);
@@ -132,11 +133,16 @@ public class FacultyHandler extends HttpServlet {
      * @param departmentId id of parent department
      * @return id of created Faculty or 0, if failed
      */
-    private int addFaculty(HttpServletRequest request, int departmentId) {
+    private void addFaculty(HttpServletRequest request, HttpServletResponse response, int departmentId) throws SQLException, ClassNotFoundException, ServletException, IOException {
+        Department d = DepartmentContext.getDepartment(departmentId);
         try {
-            Department d = DepartmentContext.getDepartment(departmentId);
             TreeSet<String> teachers = new TreeSet<>();
             TreeSet<String> subjects = new TreeSet<>();
+            if (!checkTeachersAndSubjects(request)) {
+                request.setAttribute("error", true);
+                writeAddForm(request, response, departmentId);
+                return;
+            }
             for (String s : request.getParameter("teachers").split("\n")) {
                 if (!s.isEmpty())
                     teachers.add(s.trim());
@@ -153,9 +159,10 @@ public class FacultyHandler extends HttpServlet {
                     .setTeachers(teachers)
                     .build();
             FacultyContext.addFaculty(f);
-            return f.getId();
+            response.sendRedirect("/faculty/" + f.getId());
         } catch (Exception ignored) {
-            return 0;
+            request.setAttribute("error", true);
+            writeAddForm(request, response, departmentId);
         }
     }
 
@@ -165,10 +172,15 @@ public class FacultyHandler extends HttpServlet {
      * @param id id of faculty to change
      * @return whether update was successful
      */
-    private boolean editFaculty(HttpServletRequest request, int id) {
+    private void editFaculty(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
             Faculty f = FacultyContext.getFaculty(id);
             f.clearTeachersSubjects();
+            if (!checkTeachersAndSubjects(request)) {
+                request.setAttribute("error", true);
+                writeEditForm(request, response, id);
+                return;
+            }
             for (String s : request.getParameter("teachers").split("\n")) {
                 s = s.trim();
                 if (!s.isEmpty() && !s.equals("\r")) {
@@ -184,10 +196,20 @@ public class FacultyHandler extends HttpServlet {
                 }
             }
             f.setName(request.getParameter("name"));
-            return FacultyContext.updateFaculty(f);
+            FacultyContext.updateFaculty(f);
+            response.sendRedirect("/faculty/" + id);
         } catch (Exception ignored) {
-            return false;
+            request.setAttribute("error", true);
+            writeEditForm(request, response, id);
         }
+    }
+
+    private boolean checkTeachersAndSubjects(HttpServletRequest request) {
+        Pattern p = Pattern.compile("[A-Za-z \\n\\r]*");
+        Matcher matcher = p.matcher(request.getParameter("subjects"));
+        boolean result = matcher.matches();
+        matcher = p.matcher(request.getParameter("teachers"));
+        return result && matcher.matches();
     }
 
     /**

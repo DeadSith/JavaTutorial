@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,6 +84,7 @@ public class DepartmentHandler extends HttpServlet {
             Department d = DepartmentContext.getDepartment(id);
             request.setAttribute("department", d);
         } catch (Exception ignored) {
+            response.sendRedirect("/error");
         }
         request.getRequestDispatcher("/WEB-INF/views/department/edit.jsp").forward(request, response);
     }
@@ -95,16 +97,15 @@ public class DepartmentHandler extends HttpServlet {
         String path = request.getRequestURI();
         Matcher match = editPattern.matcher(path);
         if (match.matches()) {
-            if (editDepartment(request, Integer.parseInt(match.group(1))))
-                response.sendRedirect("/department/" + match.group(1));
-            else response.sendRedirect("/error");
+            try {
+                editDepartment(request, response, Integer.parseInt(match.group(1)));
+            } catch (SQLException | ClassNotFoundException ignored) {
+                response.sendRedirect("/error");
+            }
             return;
         }
         if (path.equals("/department/add")) {
-            int i = addDepartment(request);
-            if (i != 0)
-                response.sendRedirect("/department/" + i);
-            else response.sendRedirect("/error");
+            addDepartment(request, response);
             return;
         }
         match = deletePattern.matcher(path);
@@ -119,17 +120,18 @@ public class DepartmentHandler extends HttpServlet {
      *
      * @return id of created department or 0, if failed
      */
-    private int addDepartment(HttpServletRequest request) {
-        Department d = new DepartmentBuilder()
-                .setName(request.getParameter("name"))
-                .setPhoneNumber(request.getParameter("phoneNumber"))
-                .setCreationDate(LocalDate.parse(request.getParameter("creationDate")))
-                .build();
+    private void addDepartment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            Department d = new DepartmentBuilder()
+                    .setName(request.getParameter("name"))
+                    .setPhoneNumber(request.getParameter("phoneNumber"))
+                    .setCreationDate(LocalDate.parse(request.getParameter("creationDate")))
+                    .build();
             DepartmentContext.addDepartment(d);
-            return d.getId();
+            response.sendRedirect("/department" + d.getId());
         } catch (Exception ignored) {
-            return 0;
+            request.setAttribute("error", true);
+            writeAddForm(request, response);
         }
     }
 
@@ -139,16 +141,19 @@ public class DepartmentHandler extends HttpServlet {
      * @param id id of department to edit
      * @return whether updated successfully
      */
-    private boolean editDepartment(HttpServletRequest request, int id) {
+    private void editDepartment(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, SQLException, ClassNotFoundException {
+        Department d = DepartmentContext.getDepartment(id);
+        if (d == null) {
+            response.sendRedirect("/department/add/" + id);
+        }
         try {
-            Department d = DepartmentContext.getDepartment(id);
-            if (d == null)
-                return false;
             d.setName(request.getParameter("name"));
             d.setPhoneNumber(request.getParameter("phoneNumber"));
-            return DepartmentContext.updateDepartment(d);
+            DepartmentContext.updateDepartment(d);
+            response.sendRedirect("/department/" + id);
         } catch (Exception ignored) {
-            return false;
+            request.setAttribute("error", true);
+            writeEditForm(request, response, id);
         }
     }
 

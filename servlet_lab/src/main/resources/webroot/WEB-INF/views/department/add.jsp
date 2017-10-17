@@ -1,6 +1,11 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../includes/start.jsp"/>
+<c:if test="${error}">
+    <div class="alert alert-danger" role="alert">
+        Name can contain only letters. Phone number should be in form +xxxxxxxxxxx. Use picker to set date.
+    </div>
+</c:if>
 <form action="/department/add" method="post">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Name: </label>

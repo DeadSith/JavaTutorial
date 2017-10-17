@@ -2,8 +2,12 @@ package models;
 
 import java.time.LocalDate;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DepartmentBuilder {
+    final static Pattern namePattern = Pattern.compile("[A-Za-z ]{5,}");
+    final static Pattern phonePattern = Pattern.compile("\\+\\d{10,15}");
     private String name;
     private LocalDate creationDate;
     private String phoneNumber;
@@ -11,6 +15,9 @@ public class DepartmentBuilder {
     private int id;
 
     public DepartmentBuilder setName(String name) {
+        Matcher matcher = namePattern.matcher(name);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         this.name = name;
         return this;
     }
@@ -28,6 +35,9 @@ public class DepartmentBuilder {
     }
 
     public DepartmentBuilder setPhoneNumber(String phoneNumber) {
+        Matcher matcher = phonePattern.matcher(phoneNumber);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         this.phoneNumber = phoneNumber;
         return this;
     }
