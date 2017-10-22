@@ -1,4 +1,4 @@
-group 'com.sith'
+group 'com.sith.servlet'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -17,10 +17,23 @@ dependencies {
     compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '9.4.7.v20170914'
     compile group: 'org.eclipse.jetty', name: 'apache-jsp', version: '9.4.7.v20170914'
     compile group: 'org.eclipse.jetty', name: 'apache-jstl', version: '9.4.7.v20170914'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.1'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.1'
 }
 
 test {
     useTestNG()
 }
 
+
+
 apply plugin: 'war'
+
+jar {
+    manifest {
+        attributes("Main-Class": "Main",
+                "Implementation-Version": version)
+    }
+}

@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
@@ -88,6 +90,7 @@ public class Department implements Comparable<Department> {
     /**
      * @return number of teachers on all faculties
      */
+    @JsonIgnore
     public int getTeachersCount() {
         return faculties
                 .stream()
@@ -98,6 +101,7 @@ public class Department implements Comparable<Department> {
     /**
      * @return number of subjects on all faculties
      */
+    @JsonIgnore
     public int getSubjectsCount() {
         return faculties
                 .stream()

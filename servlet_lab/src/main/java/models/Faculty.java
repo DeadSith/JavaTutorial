@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
@@ -82,14 +84,17 @@ public class Faculty implements Comparable<Faculty> {
         return subjects.remove(name);
     }
 
+    @JsonIgnore
     public int getTeachersCount() {
         return teachers.size();
     }
 
+    @JsonIgnore
     public int getSubjectsCount() {
         return subjects.size();
     }
 
+    @JsonIgnore
     public Department getDepartment() {
         return department;
     }

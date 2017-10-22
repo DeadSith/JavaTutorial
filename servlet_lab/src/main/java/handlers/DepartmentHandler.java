@@ -117,8 +117,6 @@ public class DepartmentHandler extends HttpServlet {
 
     /**
      * creates new department
-     *
-     * @return id of created department or 0, if failed
      */
     private void addDepartment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -128,7 +126,7 @@ public class DepartmentHandler extends HttpServlet {
                     .setCreationDate(LocalDate.parse(request.getParameter("creationDate")))
                     .build();
             DepartmentContext.addDepartment(d);
-            response.sendRedirect("/department" + d.getId());
+            response.sendRedirect("/department/" + d.getId());
         } catch (Exception ignored) {
             request.setAttribute("error", true);
             writeAddForm(request, response);

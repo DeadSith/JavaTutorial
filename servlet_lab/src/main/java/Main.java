@@ -1,4 +1,5 @@
 import handlers.DepartmentHandler;
+import handlers.DumpHandler;
 import handlers.FacultyHandler;
 import handlers.HomeHandler;
 import org.apache.tomcat.util.scan.StandardJarScanner;
@@ -49,6 +50,7 @@ public class Main {
         context.addServlet(HomeHandler.class, "/find/*");
         context.addServlet(DepartmentHandler.class, "/department/*");
         context.addServlet(FacultyHandler.class, "/faculty/*");
+        context.addServlet(DumpHandler.class, "/dump/*");
     }
 
     private static URI getWebRootResourceUri() throws FileNotFoundException, URISyntaxException {
