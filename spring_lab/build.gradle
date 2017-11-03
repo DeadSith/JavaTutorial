@@ -1,4 +1,4 @@
-group 'co.sith.spring_lab'
+group 'com.sith.spring_lab'
 version '1.0'
 
 apply plugin: 'java'
