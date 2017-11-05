@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.sith.spring_lab.config")
+@ComponentScan(basePackages = "com.sith.spring_lab")
 public class AppConfig {
     @Bean
     public ViewResolver viewResolver(){
