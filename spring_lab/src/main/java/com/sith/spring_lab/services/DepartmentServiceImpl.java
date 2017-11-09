@@ -46,4 +46,9 @@ public class DepartmentServiceImpl implements DepartmentService{
     public List<Department> findByName(String name) {
         return dao.getByName(name);
     }
+
+    @Override
+    public void merge(Department d) {
+        dao.merge(d);
+    }
 }

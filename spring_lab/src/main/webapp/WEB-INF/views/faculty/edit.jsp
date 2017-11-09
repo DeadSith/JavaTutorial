@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="faculty" scope="request" type="models.Faculty"/>
+<jsp:useBean id="faculty" scope="request" type="com.sith.spring_lab.models.Faculty"/>
 <jsp:include page="../includes/start.jsp"/>
 <c:if test="${error}">
     <div class="alert alert-danger" role="alert">
@@ -24,8 +24,7 @@
                 <div class="col-sm-10">
             <textarea id="teachers" class="form-control" name="teachers" pattern="[A-Za-z \n\r]*"
                       title="Teacher name can only contain letters" rows="4"><c:forEach var="teacher"
-                                                                                        items="${faculty.teachers}">${teacher}&#13;&#10;</c:forEach>
-            </textarea>
+                                                                                        items="${faculty.splitTeachers}">${teacher}&#13;&#10;</c:forEach></textarea>
                 </div>
             </div>
             <div class="form-group row">
@@ -34,7 +33,7 @@
             <textarea id="subjects" class="form-control" name="subjects" pattern="[A-Za-z \n\r]*"
                       title="Subject name can only contain letters"
                       rows="4"><c:forEach var="subject"
-                                          items="${faculty.subjects}">${subject}&#13;&#10;</c:forEach>
+                                          items="${faculty.splitSubjects}">${subject}&#13;&#10;</c:forEach>
             </textarea>
                 </div>
             </div>
@@ -43,4 +42,4 @@
     </c:otherwise>
 </c:choose>
 <jsp:include page="../includes/end.jsp"/>
-<script src="/static/js/validation.js"></script>
+<script src="/resources/js/validation.js"></script>

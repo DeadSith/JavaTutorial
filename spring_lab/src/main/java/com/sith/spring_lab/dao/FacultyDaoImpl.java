@@ -1,6 +1,5 @@
 package com.sith.spring_lab.dao;
 
-import com.sith.spring_lab.models.Department;
 import com.sith.spring_lab.models.Faculty;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,22 +15,22 @@ public class FacultyDaoImpl implements FacultyDao{
     SessionFactory sessionFactory;
 
     public void persist(Faculty f) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         s.persist(f);
     }
 
     public void update(Faculty f) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         s.update(f);
     }
 
     public void delete(Faculty f) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         s.delete(f);
     }
 
     public List<Faculty> getAll() {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<Faculty> criteria = builder.createQuery(Faculty.class);
         Root<Faculty> root = criteria.from(Faculty.class);
@@ -40,13 +39,13 @@ public class FacultyDaoImpl implements FacultyDao{
     }
 
     public Faculty getById(int id) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         return s.get(Faculty.class, id);
     }
 
     @Override
     public List<Faculty> getByName(String name) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<Faculty> criteria = builder.createQuery(Faculty.class);
         Root<Faculty> root = criteria.from(Faculty.class);

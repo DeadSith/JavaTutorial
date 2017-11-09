@@ -32,4 +32,3 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <jsp:include page="../includes/end.jsp"/>
-<script src="/static/js/validation.js"></script>

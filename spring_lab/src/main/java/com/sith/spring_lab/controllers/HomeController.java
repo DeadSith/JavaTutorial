@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ public class HomeController {
     FacultyService facultyService;
 
     @GetMapping("/home")
-    //@RequestMapping(method = RequestMethod.GET)
     public String listDepartments(ModelMap model) {
         List<Department> departments = departmentService.getAll();
         model.addAttribute("departments", departments);
@@ -36,7 +35,7 @@ public class HomeController {
     }
 
     @PostMapping("/find/{name}")
-    public String find(String name, ModelMap model){
+    public String find(@PathVariable String name, ModelMap model) {
         model.addAttribute("departments",departmentService.findByName(name));
         model.addAttribute("faculties",facultyService.findByName(name));
         return "home/find";

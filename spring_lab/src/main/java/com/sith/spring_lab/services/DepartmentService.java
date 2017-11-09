@@ -11,4 +11,6 @@ public interface DepartmentService {
     Department findById(int id);
     List<Department> getAll();
     List<Department> findByName(String name);
+
+    void merge(Department d);
 }

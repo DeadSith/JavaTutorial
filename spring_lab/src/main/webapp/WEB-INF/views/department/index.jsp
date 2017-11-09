@@ -1,4 +1,4 @@
-<jsp:useBean id="department" scope="request" type="models.Department"/>
+<jsp:useBean id="department" scope="request" type="com.sith.spring_lab.models.Department"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../includes/start.jsp"/>
 <c:choose>
@@ -23,8 +23,8 @@
                     <dt class="col-sm-3">Current faculties:</dt>
                     <dd class="col-sm-9">
                         <ul>
-                            <c:forEach var="faculty" items="${department.sortedFaculties}">
-                                <li><a href="/faculty/${faculty.id}}">${faculty.name}</a></li>
+                            <c:forEach var="faculty" items="${department.faculties}">
+                                <li><a href="/faculty/${faculty.id}">${faculty.name}</a></li>
                             </c:forEach>
                         </ul>
                     </dd>

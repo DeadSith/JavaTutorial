@@ -1,5 +1,5 @@
-<jsp:useBean id="department" scope="request" type="models.Department"/>
-<jsp:useBean id="faculty" scope="request" type="models.Faculty"/>
+<jsp:useBean id="department" scope="request" type="com.sith.spring_lab.models.Department"/>
+<jsp:useBean id="faculty" scope="request" type="com.sith.spring_lab.models.Faculty"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../includes/start.jsp"/>
 <c:choose>
@@ -23,7 +23,7 @@
     <dt class="col-sm-3">Current teachers:</dt>
     <dd class="col-sm-9">
         <ul>
-            <c:forEach var="teacher" items="${faculty.teachers}">
+            <c:forEach var="teacher" items="${faculty.splitTeachers}">
                 <li>${teacher}</li>
             </c:forEach>
         </ul>
@@ -31,7 +31,7 @@
     <dt class="col-sm-3">Current subjects:</dt>
     <dd class="col-sm-9">
         <ul>
-            <c:forEach var="subject" items="${faculty.subjects}">
+            <c:forEach var="subject" items="${faculty.splitSubjects}">
                 <li>${subject}</li>
             </c:forEach>
         </ul>

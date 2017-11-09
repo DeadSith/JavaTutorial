@@ -13,24 +13,30 @@ import java.util.List;
 public class DepartmentDaoImpl implements DepartmentDao {
     @Autowired
     SessionFactory sessionFactory;
+    //Session s;
 
     public void persist(Department d) {
-        Session s = sessionFactory.openSession();
-        s.persist(d);
+        Session s = sessionFactory.getCurrentSession();
+        s.save(d);
+    }
+
+    public void merge(Department d) {
+        Session s = sessionFactory.getCurrentSession();
+        s.merge(d);
     }
 
     public void update(Department d) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         s.update(d);
     }
 
     public void delete(Department d) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         s.delete(d);
     }
 
     public List<Department> getAll() {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<Department> criteria = builder.createQuery(Department.class);
         Root<Department> root = criteria.from(Department.class);
@@ -39,13 +45,14 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     public Department getById(int id) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
         return s.get(Department.class, id);
     }
 
     @Override
     public List<Department> getByName(String name) {
-        Session s = sessionFactory.openSession();
+        Session s = sessionFactory.getCurrentSession();
+
         CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<Department> criteria = builder.createQuery(Department.class);
         Root<Department> root = criteria.from(Department.class);

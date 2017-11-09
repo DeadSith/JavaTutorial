@@ -1,4 +1,4 @@
-<jsp:useBean id="department" scope="request" type="models.Department"/>
+<jsp:useBean id="department" scope="request" type="com.sith.spring_lab.models.Department"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../includes/start.jsp"/>
 <c:if test="${error}">

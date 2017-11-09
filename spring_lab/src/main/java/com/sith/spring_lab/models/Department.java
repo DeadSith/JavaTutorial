@@ -1,23 +1,35 @@
 package com.sith.spring_lab.models;
 
-import java.sql.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
+@Table(name = "java.departments")
+@Transactional
 public class Department {
-    private Date creationDate;
+    private LocalDate creationDate;
     private int id;
     private String name;
     private String phoneNumber;
     private Set<Faculty> faculties;
 
-    public Date getCreationDate() {
+    @Column(name = "creation_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -26,6 +38,7 @@ public class Department {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,6 +47,7 @@ public class Department {
         this.name = name;
     }
 
+    @Column(name = "phone_number")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -52,9 +66,7 @@ public class Department {
         if (id != that.id) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-
-        return true;
+        return phoneNumber != null ? phoneNumber.equals(that.phoneNumber) : that.phoneNumber == null;
     }
 
     @Override
@@ -66,11 +78,27 @@ public class Department {
         return result;
     }
 
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     public Set<Faculty> getFaculties() {
         return faculties;
     }
 
     public void setFaculties(Set<Faculty> faculties) {
         this.faculties = faculties;
+    }
+
+    @Transient
+    public int getFacultiesCount() {
+        return faculties.size();
+    }
+
+    public void addFaculty(Faculty f) {
+        f.setDepartment(this);
+        faculties.add(f);
+    }
+
+    public void removeFaculty(Faculty f) {
+        faculties.remove(f);
+        f.setDepartment(null);
     }
 }

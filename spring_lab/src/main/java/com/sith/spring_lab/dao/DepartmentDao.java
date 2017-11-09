@@ -11,4 +11,6 @@ public interface DepartmentDao {
     List<Department> getAll();
     Department getById(int id);
     List<Department> getByName(String name);
+
+    void merge(Department d);
 }
