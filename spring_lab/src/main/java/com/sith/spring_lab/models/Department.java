@@ -6,11 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "java.departments")
 @Transactional
 public class Department {
+    final static Pattern namePattern = Pattern.compile("[A-Za-z ,]{5,}");
+    final static Pattern phonePattern = Pattern.compile("\\+\\d{10,15}");
+
     private LocalDate creationDate;
     private int id;
     private String name;
@@ -24,7 +29,11 @@ public class Department {
     }
 
     public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+        if (creationDate.isAfter(LocalDate.now())) {
+            this.creationDate = LocalDate.now();
+        } else {
+            this.creationDate = creationDate;
+        }
     }
 
     @Id
@@ -44,6 +53,9 @@ public class Department {
     }
 
     public void setName(String name) {
+        Matcher matcher = namePattern.matcher(name);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         this.name = name;
     }
 
@@ -53,6 +65,9 @@ public class Department {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        Matcher matcher = phonePattern.matcher(phoneNumber);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         this.phoneNumber = phoneNumber;
     }
 

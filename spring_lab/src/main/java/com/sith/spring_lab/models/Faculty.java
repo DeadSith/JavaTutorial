@@ -5,11 +5,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "java.faculties")
 @Transactional
 public class Faculty {
+    final static Pattern namePattern = Pattern.compile("[A-Za-z ,]{5,}");
+
     private int id;
     private String name;
     private LocalDate creationDate;
@@ -34,6 +38,9 @@ public class Faculty {
     }
 
     public void setName(String name) {
+        Matcher matcher = namePattern.matcher(name);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         this.name = name;
     }
 
@@ -44,7 +51,11 @@ public class Faculty {
     }
 
     public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+        if (creationDate.isAfter(LocalDate.now())) {
+            this.creationDate = LocalDate.now();
+        } else {
+            this.creationDate = creationDate;
+        }
     }
 
     @Column(name = "teachers")
@@ -75,8 +86,7 @@ public class Faculty {
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        if (teachers != null ? !teachers.equals(that.teachers) : that.teachers != null) return false;
-        return subjects != null ? subjects.equals(that.subjects) : that.subjects == null;
+        return true;
     }
 
     @Override
@@ -88,8 +98,6 @@ public class Faculty {
     }
 
     @ManyToOne
-    //@JoinColumn(name = "department_id")
-    //@Column(name = "department")
     public Department getDepartment() {
         return department;
     }

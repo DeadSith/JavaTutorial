@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service("facultyService")
 @Transactional
@@ -62,6 +64,10 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public String convertStringForDb(String input) {
+        Pattern pattern = Pattern.compile("[A-Za-z \n\r]{5,}");
+        Matcher matcher = pattern.matcher(input);
+        if (!matcher.matches())
+            throw new IllegalArgumentException();
         String[] values = input.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String value : values) {

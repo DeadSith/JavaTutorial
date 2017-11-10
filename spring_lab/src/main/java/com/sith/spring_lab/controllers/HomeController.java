@@ -40,4 +40,7 @@ public class HomeController {
         model.addAttribute("faculties",facultyService.findByName(name));
         return "home/find";
     }
+
+    //@GetMapping("/dump/get")
+
 }
