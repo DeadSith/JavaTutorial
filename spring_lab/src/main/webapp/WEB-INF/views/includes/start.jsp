@@ -24,7 +24,7 @@
                 <a class="nav-link" href="/dump/download">Download database dump</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" method="post" action="/">
+        <form class="form-inline my-2 my-lg-0" method="post" action="/find">
             <input class="form-control mr-sm-2" type="text" required pattern="[A-Za-z ]{3,}"
                    title="Name contains only letters!" name="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

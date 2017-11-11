@@ -3,13 +3,15 @@ package com.sith.spring_lab.controllers;
 import com.sith.spring_lab.models.Department;
 import com.sith.spring_lab.services.DepartmentService;
 import com.sith.spring_lab.services.FacultyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -24,6 +26,8 @@ public class HomeController {
     @Autowired
     FacultyService facultyService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/home")
     public String listDepartments(ModelMap model) {
         List<Department> departments = departmentService.getAll();
@@ -36,8 +40,8 @@ public class HomeController {
         return "home/error";
     }
 
-    @PostMapping("/find/{name}")
-    public String find(@PathVariable String name, ModelMap model) {
+    @PostMapping("/find")
+    public String find(@RequestParam(value = "search") String name, ModelMap model) {
         model.addAttribute("departments",departmentService.findByName(name));
         model.addAttribute("faculties",facultyService.findByName(name));
         return "home/find";
@@ -62,7 +66,7 @@ public class HomeController {
             in.close();
             out.flush();
         } catch (Exception ex) {
-            System.err.println(ex.getMessage());
+            logger.error("Request: /dump/download. Reason: " + ex.getMessage());
             response.sendRedirect("/error");
         }
     }

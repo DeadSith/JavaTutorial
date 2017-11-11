@@ -4,6 +4,8 @@ import com.sith.spring_lab.models.Department;
 import com.sith.spring_lab.models.Faculty;
 import com.sith.spring_lab.services.DepartmentService;
 import com.sith.spring_lab.services.FacultyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,8 @@ public class FacultyController {
     @Autowired
     DepartmentService departmentService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/{id}")
     public String getFaculty(@PathVariable int id, ModelMap map) {
         map.addAttribute("id", id);
@@ -30,7 +34,8 @@ public class FacultyController {
             map.addAttribute("faculty", f);
             map.addAttribute("department", f.getDepartment());
             return "faculty/index";
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            logger.error("Request: /" + id + ". Reason: No Faculty with id " + id + " exists.");
             return "redirect:/error";
         }
     }
@@ -39,6 +44,7 @@ public class FacultyController {
     public String getAddForm(@PathVariable int id, ModelMap map) {
         Department d = departmentService.findById(id);
         if (d == null) {
+            logger.error("Request: /add/" + id + ". Reason: No department with id " + id + " exists.");
             return "redirect:/error";
         }
         map.addAttribute("id", id);
@@ -50,6 +56,7 @@ public class FacultyController {
         map.addAttribute("id", id);
         Faculty f = facultyService.findById(id);
         if (f == null) {
+            logger.error("Request: /edit/" + id + ". Reason: No faculty with id " + id + " exists.");
             return "redirect:/error";
         }
         map.addAttribute("faculty", f);
@@ -61,12 +68,13 @@ public class FacultyController {
         try {
             Department d = departmentService.findById(id);
             if (d == null) {
+                logger.error("Request: POST:/add/" + id + ". Reason: No department with id " + id + " exists.");
                 return "redirect:/error";
             }
             facultyService.save(f, d);
             return "redirect:/department/" + id;
-        } catch (Exception ignored) {
-            System.err.println(ignored);
+        } catch (Exception ex) {
+            logger.error("Request: POST:/add/" + id + ". Reason: " + ex.getMessage());
             map.addAttribute("error", true);
             return "faculty/add";
         }
@@ -84,7 +92,8 @@ public class FacultyController {
             entity.setTeachers(facultyService.convertStringForDb(f.getTeachers()));
             facultyService.update(entity);
             return "redirect:/faculty/" + id;
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            logger.error("Request: POST:/edit/" + id + ". Reason: " + ex.getMessage());
             map.addAttribute("error", true);
             return "faculty/edit/" + id;
         }
@@ -95,7 +104,8 @@ public class FacultyController {
     public String deleteFaculty(@PathVariable int id, ModelMap map) {
         try {
             facultyService.deleteById(id);
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            logger.error("Request: POST:/delete/" + id + ". Reason: " + ex.getMessage());
         }
         return "redirect:/home";
     }

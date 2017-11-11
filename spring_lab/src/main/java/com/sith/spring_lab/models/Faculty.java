@@ -41,7 +41,7 @@ public class Faculty {
     public void setName(String name) {
         Matcher matcher = namePattern.matcher(name);
         if (!matcher.matches())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Wrong input");
         this.name = name;
     }
 

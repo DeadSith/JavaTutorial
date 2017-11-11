@@ -67,7 +67,7 @@ public class FacultyServiceImpl implements FacultyService {
         Pattern pattern = Pattern.compile("[A-Za-z \n\r]*");
         Matcher matcher = pattern.matcher(input);
         if (!matcher.matches())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Wrong input");
         String[] values = input.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String value : values) {

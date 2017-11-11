@@ -55,7 +55,7 @@ public class Department {
     public void setName(String name) {
         Matcher matcher = namePattern.matcher(name);
         if (!matcher.matches())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Wrong input");
         this.name = name;
     }
 
@@ -67,7 +67,7 @@ public class Department {
     public void setPhoneNumber(String phoneNumber) {
         Matcher matcher = phonePattern.matcher(phoneNumber);
         if (!matcher.matches())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Wrong input");
         this.phoneNumber = phoneNumber;
     }
 
