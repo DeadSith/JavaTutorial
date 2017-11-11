@@ -1,5 +1,6 @@
 package com.sith.spring_lab.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,8 +86,7 @@ public class Faculty {
 
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        return true;
+        return creationDate != null ? creationDate.equals(that.creationDate) : that.creationDate == null;
     }
 
     @Override
@@ -97,6 +97,7 @@ public class Faculty {
         return result;
     }
 
+    @JsonIgnore
     @ManyToOne
     public Department getDepartment() {
         return department;

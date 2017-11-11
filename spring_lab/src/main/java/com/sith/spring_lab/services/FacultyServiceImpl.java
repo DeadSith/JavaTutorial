@@ -64,7 +64,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public String convertStringForDb(String input) {
-        Pattern pattern = Pattern.compile("[A-Za-z \n\r]{5,}");
+        Pattern pattern = Pattern.compile("[A-Za-z \n\r]*");
         Matcher matcher = pattern.matcher(input);
         if (!matcher.matches())
             throw new IllegalArgumentException();

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 
 @Controller
@@ -41,6 +43,27 @@ public class HomeController {
         return "home/find";
     }
 
-    //@GetMapping("/dump/get")
-
+    @GetMapping("/dump/download")
+    public void getDump(HttpServletResponse response) throws IOException {
+        try {
+            response.setContentType("application/json");
+            response.setHeader("Content-disposition", "attachment; filename=dump.json");
+            String dumpDirectory = System.getProperty("user.home");
+            //Get directory to save from environment
+            File dump = new File(dumpDirectory + "/dump.json");
+            departmentService.serializeCollection(departmentService.getAll(), new PrintWriter(dump));
+            OutputStream out = response.getOutputStream();
+            FileInputStream in = new FileInputStream(dump);
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            in.close();
+            out.flush();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            response.sendRedirect("/error");
+        }
+    }
 }

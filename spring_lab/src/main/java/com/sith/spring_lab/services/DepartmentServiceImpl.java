@@ -1,11 +1,17 @@
 package com.sith.spring_lab.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sith.spring_lab.dao.DepartmentDao;
 import com.sith.spring_lab.models.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Collection;
 import java.util.List;
 
 @Service("departmentService")
@@ -50,5 +56,14 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public void merge(Department d) {
         dao.merge(d);
+    }
+
+    @Override
+    public void serializeCollection(Collection<Department> objects, Writer output) throws IOException {
+        ObjectMapper mapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule());
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.writeValue(output, objects);
+        output.flush();
     }
 }
