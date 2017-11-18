@@ -28,8 +28,6 @@ public class HibernateConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.sith.spring_lab.models");
-        // WEB-INF/classes/..
-        //sessionFactory.setMappingResources("DepartmentsEntity.hbm.xml","FacultiesEntity.hbm.xml");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

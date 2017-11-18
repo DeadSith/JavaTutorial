@@ -28,6 +28,9 @@ public class HomeController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * @return page with all departments
+     */
     @GetMapping("/home")
     public String listDepartments(ModelMap model) {
         List<Department> departments = departmentService.getAll();
@@ -35,11 +38,18 @@ public class HomeController {
         return "home/index";
     }
 
+    /**
+     * @return error page
+     */
     @GetMapping("/error")
     public String showError(ModelMap model){
         return "home/error";
     }
 
+    /**
+     * @param name faculties and departments to find
+     * @return list of faculties/departments, whose lower-case name matches {@code name}
+     */
     @PostMapping("/find")
     public String find(@RequestParam(value = "search") String name, ModelMap model) {
         model.addAttribute("departments",departmentService.findByName(name));
@@ -47,6 +57,13 @@ public class HomeController {
         return "home/find";
     }
 
+    /**
+     * creates dump on server and sends it to client
+     * location to save file is {@code user.home}
+     *
+     * @param response response to write file to
+     * @throws IOException failed to create/change file
+     */
     @GetMapping("/dump/download")
     public void getDump(HttpServletResponse response) throws IOException {
         try {

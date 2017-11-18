@@ -14,8 +14,14 @@ public interface DepartmentService {
     Department findById(int id);
     List<Department> getAll();
     List<Department> findByName(String name);
-
     void merge(Department d);
 
+    /**
+     * Creates JSON file with specified departments on server
+     *
+     * @param objects departments to serialize
+     * @param output
+     * @throws IOException unable to create/write to output
+     */
     void serializeCollection(Collection<Department> objects, Writer output) throws IOException;
 }

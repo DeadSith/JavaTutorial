@@ -26,6 +26,10 @@ public class FacultyController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * @param id faculty to get
+     * @return Info about faculty or error, if not found
+     */
     @GetMapping("/{id}")
     public String getFaculty(@PathVariable int id, ModelMap map) {
         map.addAttribute("id", id);
@@ -40,6 +44,10 @@ public class FacultyController {
         }
     }
 
+    /**
+     * @param id department to add faculty to
+     * @return add form or error page, if department not found
+     */
     @GetMapping("/add/{id}")
     public String getAddForm(@PathVariable int id, ModelMap map) {
         Department d = departmentService.findById(id);
@@ -51,6 +59,10 @@ public class FacultyController {
         return "faculty/add";
     }
 
+    /**
+     * @param id faculty to add
+     * @return edit form or error page, if faculty not found
+     */
     @GetMapping("/edit/{id}")
     public String getEditForm(@PathVariable int id, ModelMap map) {
         map.addAttribute("id", id);
@@ -63,6 +75,11 @@ public class FacultyController {
         return "faculty/edit";
     }
 
+    /**
+     * @param id department to add to
+     * @param f  faculty to add
+     * @return department page; error page, if department not found; add form, if input error
+     */
     @PostMapping("/add/{id}")
     public String addFaculty(@PathVariable int id, Faculty f, ModelMap map) {
         try {
@@ -80,6 +97,11 @@ public class FacultyController {
         }
     }
 
+    /**
+     * @param f values to change
+     * @param id faculty to change
+     * @return faculty page or edit from, if input error
+     */
     @PostMapping("/edit/{id}")
     public String editFaculty(Faculty f, @PathVariable int id, ModelMap map) {
         try {
@@ -100,6 +122,10 @@ public class FacultyController {
     }
 
 
+    /**
+     * @param id faculty to delete
+     * @return home page
+     */
     @PostMapping("/delete/{id}")
     public String deleteFaculty(@PathVariable int id, ModelMap map) {
         try {

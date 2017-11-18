@@ -13,7 +13,6 @@ import java.util.List;
 public class DepartmentDaoImpl implements DepartmentDao {
     @Autowired
     SessionFactory sessionFactory;
-    //Session s;
 
     public void persist(Department d) {
         Session s = sessionFactory.getCurrentSession();
@@ -52,7 +51,6 @@ public class DepartmentDaoImpl implements DepartmentDao {
     @Override
     public List<Department> getByName(String name) {
         Session s = sessionFactory.getCurrentSession();
-
         CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<Department> criteria = builder.createQuery(Department.class);
         Root<Department> root = criteria.from(Department.class);
